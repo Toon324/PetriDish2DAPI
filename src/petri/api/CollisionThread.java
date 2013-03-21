@@ -3,7 +3,7 @@ package petri.api;
 /**
  * Calculates the collisions of one actor in relation to the group of actors.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public class CollisionThread implements Runnable {
 

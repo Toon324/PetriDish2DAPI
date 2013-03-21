@@ -6,13 +6,13 @@ import javax.swing.JFrame;
 /**
  * Starts the game and displays the Applet.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
-public class Window {
+public class GameWindow {
 	public static void main(String[] args) {
 		// Sets up game
-		Trivia game = new Trivia();
-		JFrame frame = new JFrame("Trivia");
+		Game game = new Game();
+		JFrame frame = new JFrame(game.getName());
 
 		// Initializes game
 		game.init();

@@ -11,7 +11,7 @@ import java.awt.geom.Point2D;
 /**
  * Generic class for all objects in the game that both move and paint.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public abstract class Actor {
 

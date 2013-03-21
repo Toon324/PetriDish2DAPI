@@ -12,16 +12,16 @@ import java.util.List;
 /**
  * Graphic representing a clickable area for game control.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public class Button {
-	protected int width, height;
+	protected int width, height, x_pos, y_pos;
 	protected String text;
-	protected boolean clicked;
-	protected boolean enabled;
+	protected boolean clicked, enabled;
 	protected Polygon bounds;
-	protected int x_pos, y_pos;
+	protected Color c1, c2;
 	protected Font f = new Font("Serif", Font.BOLD, 25);
+	
 
 	/**
 	 * Creates a new Button.
@@ -36,6 +36,8 @@ public class Button {
 	public Button(String s, int x, int y) {
 		enabled = true;
 		clicked = false;
+		c1 = Color.black;
+		c2 = Color.white;
 		text = s;
 		x_pos = x;
 		y_pos = y;
@@ -73,13 +75,13 @@ public class Button {
 		bounds = outside;
 
 		// Draws the outside section of the Button
-		g.setColor(Color.cyan);
+		g.setColor(c1);
 		g.fillPolygon(outside);
 
-		g.setColor(Color.BLACK);
+		g.setColor(c2);
 		if (!enabled) // If a Button can not be clicked, it is colored
 						// differently
-			g.setColor(Color.DARK_GRAY);
+			g.setColor(c2.brighter().brighter().brighter());
 
 		// Calculates inner wings
 		Polygon inside = new Polygon();
@@ -98,7 +100,7 @@ public class Button {
 		g.setColor(Color.cyan);
 		g.drawString(text, x_pos + 10, y_pos + 23);
 
-		// Resets graphics to whatever Color it was origionally
+		// Resets graphics to whatever Color it was originally
 		g.setColor(temp);
 		g.setFont(tempF);
 	}
@@ -236,6 +238,11 @@ public class Button {
 	public void set(int x, int y) {
 		x_pos = x;
 		y_pos = y;
+	}
+	
+	public void setColorScheme(Color newC1, Color newC2) {
+		c1 = newC1;
+		c2 = newC2;
 	}
 
 	/**

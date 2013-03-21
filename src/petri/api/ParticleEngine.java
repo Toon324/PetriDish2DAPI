@@ -7,7 +7,7 @@ import java.util.Random;
 /**
  * Controls the logic behind the creation of differing Particle explosions.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public class ParticleEngine {
 

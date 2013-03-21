@@ -13,26 +13,28 @@ import java.awt.event.MouseMotionListener;
 /**
  * The class that controls and owns all necessary objects.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
-public class Trivia extends Applet implements Runnable, MouseListener,
+public class Game extends Applet implements Runnable, MouseListener,
 		MouseMotionListener, KeyListener {
+	
 	private static final long serialVersionUID = 42l;
+	
 	private Thread th; // Game thread
 	private Thread close; // Used for closing the game
 	private GameEngine engine;
 
 	/**
-	 * Creates a new Trivia game.
+	 * Creates a new game object.
 	 * 
 	 * @param debug
 	 *            If True, game prints out debug information.
 	 */
-	public Trivia() {
+	public Game() {
 		close = new Thread(new CloseHook(this));
 		th = new Thread(this);
 		Runtime.getRuntime().addShutdownHook(close);
-		GameEngine.log("Trivia has been initialized.");
+		GameEngine.log("Game has been initialized.");
 		GameEngine.log("Found " + Runtime.getRuntime().availableProcessors()
 				+ " processors to use");
 	}
@@ -48,24 +50,24 @@ public class Trivia extends Applet implements Runnable, MouseListener,
 		addKeyListener(this);
 		engine = new GameEngine(false);
 		engine.setWindowSize(getWidth(), getHeight());
-		engine.setMode(engine.instructions);
+
 	}
 
 	/**
 	 * A thread used to close the game correctly.
 	 * 
-	 * @author Cody Swendrowski, Dan Miller
+	 * @author Cody Swendrowski
 	 */
 	public class CloseHook implements Runnable {
-		Trivia t;
+		Game g;
 
-		public CloseHook(Trivia tri) {
-			t = tri;
+		public CloseHook(Game game) {
+			g = game;
 		}
 
 		@Override
 		public void run() {
-			t.onClose(); // Closes the game from a new thread to avoid errors
+			g.onClose(); // Closes the game from a new thread to avoid errors
 			try {
 				this.finalize();
 			} catch (Throwable e) {

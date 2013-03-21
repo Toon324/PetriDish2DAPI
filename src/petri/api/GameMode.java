@@ -2,6 +2,7 @@ package petri.api;
 
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import javax.imageio.ImageIO;
  * @author Cody Swendrowski, Dan Miller
  */
 
-public abstract class GameMode {
+public class GameMode {
 
 	public ArrayList<Button> buttons;
 	public GameEngine engine;
@@ -28,12 +29,6 @@ public abstract class GameMode {
 	public GameMode(GameEngine eng) {
 		engine = eng;
 		buttons = new ArrayList<Button>();
-		try {
-			background = ImageIO.read(MainMenu.class
-					.getResourceAsStream("Resources\\space_background.jpg"));
-		} catch (IOException e) {
-			GameEngine.log("Can not load background image.");
-		}
 	}
 
 	/**
@@ -95,6 +90,14 @@ public abstract class GameMode {
 			GameEngine.log("No defined buttons in " + this.toString());
 		}
 		return false;
+	}
+
+	/**
+	 * Accepts keyboard input.
+	 * @param e KeyEvent
+	 */
+	public void keyTyped(KeyEvent e) {
+		
 	}
 
 }

@@ -19,7 +19,7 @@ import javax.sound.sampled.Clip;
 /**
  * Handles all the game logic and painting based on the current game mode.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public class GameEngine {
 
@@ -33,11 +33,8 @@ public class GameEngine {
 	private long millis; // Used to calculate time between each frame
 
 	// GameModes
-	MainMenu mainMenu;
-	MainGame mainGame;
-	Instructions instructions;
-	EndGame endGame;
-	Sandbox sandbox;
+	ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
+	
 	ParticleEngine particleEngine;
 
 	protected int score;
@@ -53,7 +50,7 @@ public class GameEngine {
 	double FPS;
 
 	static {
-		File file = new File("src\\trivia\\Resources\\log.txt");
+		File file = new File("petri/api/resources/debug.txt");
 		try {
 			if (!file.exists())
 				file.createNewFile();
@@ -77,17 +74,19 @@ public class GameEngine {
 	public GameEngine(boolean debug) {
 		actors = new Actors(this);
 		debugMode = debug;
-		mainMenu = new MainMenu(this);
-		endGame = new EndGame(this);
-		sandbox = new Sandbox(this);
+		
 		particleEngine = new ParticleEngine(this);
-		instructions = new Instructions(this);
-		mode = mainMenu;
+		
+		mode = new GameMode(this);
+		
 		windowWidth = 800;
 		windowHeight = 600;
+		
 		millis = System.currentTimeMillis();
+		
 		stepTimes = new ArrayList<Long>();
 		stepTimes.add(millis);
+		
 		score = 0;
 	}
 
@@ -145,10 +144,6 @@ public class GameEngine {
 	 */
 	public void setMode(GameMode newMode) {
 		mode = newMode;
-		if (mode instanceof MainGame) {
-			actors.clear();
-			score = 0;
-		}
 	}
 
 	/**
@@ -230,8 +225,8 @@ public class GameEngine {
 	public void keyTyped(KeyEvent e) {
 		if (e.getKeyChar() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
-		else if (e.getKeyChar() == KeyEvent.VK_ENTER)
-			ENTER = true;
+		else
+			mode.keyTyped(e);
 	}
 
 	/**
@@ -243,5 +238,13 @@ public class GameEngine {
 	 */
 	public boolean isOver(MouseEvent e) {
 		return mode.isOver(e.getX(), e.getY());
+	}
+	
+	public int getScore() {
+		return score;
+	}
+	
+	public void setScore(int newScore) {
+		score = newScore;
 	}
 }
