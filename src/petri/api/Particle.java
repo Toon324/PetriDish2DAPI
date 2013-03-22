@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
  * 
  * @author Cody Swendrowski, Dan Miller
  */
-public class Particle extends Actor {
+public class Particle extends PolygonActor {
 
 	private int alpha;
 	
@@ -63,7 +63,7 @@ public class Particle extends Actor {
 		super.setCenter(x, y);
 	}
 	
-	public void checkCollision(Actor other) {
+	public void checkCollision(PolygonActor other) {
 		return; //Particle does not collide
 	}
 	
