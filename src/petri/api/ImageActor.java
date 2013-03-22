@@ -9,7 +9,7 @@ import java.awt.Graphics;
  * @author Cody
  *
  */
-public class ImageActor extends Actor {
+public abstract class ImageActor extends Actor {
 
 	protected GameImage image;
 	
@@ -27,8 +27,7 @@ public class ImageActor extends Actor {
 	 */
 	@Override
 	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-
+		g.drawImage(image.getImage(), (int) center.x, (int) center.y, null);
 	}
 
 }

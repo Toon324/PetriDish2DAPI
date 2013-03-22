@@ -1,9 +1,5 @@
-/**
- * 
- */
 package petri.api;
 
-import java.awt.Point;
 import java.awt.Polygon;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,7 +7,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
- * @author Cody
+ * @author Cody Swendrowski
  * 
  */
 public class AnimatedImage extends GameImage {

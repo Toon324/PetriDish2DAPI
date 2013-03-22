@@ -12,11 +12,15 @@ public abstract class Actor {
 	protected Polygon basePoly;
 	protected GameEngine engine;
 	protected Point2D.Float vectVel; // speed in pixels/s
+	protected int health, dir, maxHealth;
 	
 	public Actor(GameEngine e) {
 		death = false;
 		engine = e;
 		basePoly = new Polygon();
+		health = 0;
+		dir = 0;
+		maxHealth = 0;
 	}
 	
 	/**
@@ -59,6 +63,22 @@ public abstract class Actor {
 	 */
 	public boolean isDead() {
 		return death;
+	}
+	
+	public int getHealth() {
+		return health;
+	}
+	
+	public void dealDamage(int damage) {
+		health -= damage;
+		if (health <= 0)
+			death = true;
+	}
+	
+	public void heal(int healAmt) {
+		health += healAmt;
+		if (health >= maxHealth)
+			health = maxHealth;
 	}
 
 	/**
