@@ -9,12 +9,12 @@ import javax.swing.JFrame;
  * @author Cody Swendrowski
  */
 public final class GameInitializer {
-	Game game;
+	GameApplet game;
 	JFrame frame;
 	
 	public GameInitializer(String name) {
 		// Sets up game
-		game = new Game();
+		game = new GameApplet();
 		frame = new JFrame(name);
 
 		// Initializes game

@@ -15,7 +15,7 @@ import java.awt.event.MouseMotionListener;
  * 
  * @author Cody Swendrowski
  */
-public class Game extends Applet implements Runnable, MouseListener,
+public class GameApplet extends Applet implements Runnable, MouseListener,
 		MouseMotionListener, KeyListener {
 	
 	private static final long serialVersionUID = 42l;
@@ -30,7 +30,7 @@ public class Game extends Applet implements Runnable, MouseListener,
 	 * @param debug
 	 *            If True, game prints out debug information.
 	 */
-	public Game() {
+	public GameApplet() {
 		close = new Thread(new CloseHook(this));
 		th = new Thread(this);
 		Runtime.getRuntime().addShutdownHook(close);
@@ -59,9 +59,9 @@ public class Game extends Applet implements Runnable, MouseListener,
 	 * @author Cody Swendrowski
 	 */
 	public class CloseHook implements Runnable {
-		Game g;
+		GameApplet g;
 
-		public CloseHook(Game game) {
+		public CloseHook(GameApplet game) {
 			g = game;
 		}
 

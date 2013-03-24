@@ -34,18 +34,17 @@ public class GameEngine {
 	protected ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
 	
 	public ParticleEngine particleEngine;
+	public SoundPlayer soundPlayer;
 
 	protected int score;
 
-	public static Point environmentSIze = new Point(0, 0);
+	public static Point environmentSize = new Point(0, 0);
 	public static PrintWriter debugWriter;
 	public static boolean debugMode;
 
-	private int windowWidth, windowHeight, frames;
-	boolean ENTER;
-	ArrayList<Long> stepTimes;
-	Actors actors;
-	double FPS;
+	protected ArrayList<Long> stepTimes;
+	public Actors actors;
+	protected double FPS;
 
 	static {
 		File file = new File("petri/api/resources/debug.txt");
@@ -77,8 +76,8 @@ public class GameEngine {
 		
 		currentMode = new GameMode(this);
 		
-		windowWidth = 800;
-		windowHeight = 600;
+		environmentSize.x = 800;
+		environmentSize.y = 600;
 		
 		millis = System.currentTimeMillis();
 		
@@ -163,34 +162,8 @@ public class GameEngine {
 	 *            Height of window
 	 */
 	public void setWindowSize(int width, int height) {
-		windowWidth = width;
-		windowHeight = height;
-	}
-
-	/**
-	 * Uses AudioSystem to get a clip of name s and play it.
-	 * 
-	 * @param s
-	 *            Name of sound clip to play
-	 * @param loop
-	 *            If true, loops sound forever
-	 */
-	public void playSound(String s, boolean loop) {
-		try {
-			Clip clip = AudioSystem.getClip();
-			AudioInputStream inputStream = AudioSystem
-					.getAudioInputStream(Actors.class
-							.getResourceAsStream("Resources\\" + s));
-			clip.open(inputStream);
-			if (loop) {
-				clip.loop(Clip.LOOP_CONTINUOUSLY);
-			} else {
-				clip.start();
-			}
-			log("Now playing " + s);
-		} catch (Exception e) {
-			log("Could not load sound clip " + s + " Error: " + e.toString());
-		}
+		environmentSize.x = width;
+		environmentSize.y = height;
 	}
 
 	/**
@@ -260,11 +233,15 @@ public class GameEngine {
 		currentMode = gameModes.get(indexOfMode);
 	}
 	
+	public GameMode getCurrentGameMode() {
+		return currentMode;
+	}
+	
 	public ArrayList<GameMode> getGameModes() {
 		return gameModes;
 	}
 
 	public Point getEnvironmentSize() {
-		return environmentSIze;
+		return environmentSize;
 	}
 }
