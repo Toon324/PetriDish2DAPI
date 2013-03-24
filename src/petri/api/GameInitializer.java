@@ -8,11 +8,11 @@ import javax.swing.JFrame;
  * 
  * @author Cody Swendrowski
  */
-public final class GameWindow {
+public final class GameInitializer {
 	Game game;
 	JFrame frame;
 	
-	public GameWindow(String name) {
+	public GameInitializer(String name) {
 		// Sets up game
 		game = new Game();
 		frame = new JFrame(name);
