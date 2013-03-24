@@ -8,11 +8,14 @@ import javax.swing.JFrame;
  * 
  * @author Cody Swendrowski
  */
-public class GameWindow {
-	public static void main(String[] args) {
+public final class GameWindow {
+	Game game;
+	JFrame frame;
+	
+	public GameWindow(String name) {
 		// Sets up game
-		Game game = new Game();
-		JFrame frame = new JFrame(game.getName());
+		game = new Game();
+		frame = new JFrame(name);
 
 		// Initializes game
 		game.init();
@@ -26,5 +29,14 @@ public class GameWindow {
 
 		// Runs game
 		game.run();
+	}
+
+
+	public GameEngine getEngine() {
+		return game.getEngine();
+	}
+	
+	public JFrame getFrame() {
+		return frame;
 	}
 }

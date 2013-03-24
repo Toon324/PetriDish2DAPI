@@ -14,8 +14,8 @@ import java.util.concurrent.*;
 public class Actors {
 
 	private final int MAX_ACTORS = 1000;
-	private ArrayList<PolygonActor> actors = new ArrayList<PolygonActor>();
-	private ArrayList<PolygonActor> toAdd = new ArrayList<PolygonActor>();
+	private ArrayList<Actor> actors = new ArrayList<Actor>();
+	private ArrayList<Actor> toAdd = new ArrayList<Actor>();
 	private GameEngine engine;
 	private ExecutorService threadPool = Executors.newCachedThreadPool();
 
@@ -35,7 +35,7 @@ public class Actors {
 	 * @param a
 	 *            Actor to be added
 	 */
-	public void add(PolygonActor a) {
+	public void add(Actor a) {
 		if (actors.size() >= MAX_ACTORS) {
 			return;
 		}
@@ -50,19 +50,19 @@ public class Actors {
 	 * modification.
 	 */
 	public void handleActors(int ms) {
-		ArrayList<PolygonActor> toRemove = new ArrayList<PolygonActor>(); // Dead objects to
+		ArrayList<Actor> toRemove = new ArrayList<Actor>(); // Dead objects to
 															// be removed
 		ArrayList<Point2D.Float> particles = new ArrayList<Point2D.Float>(); // Particles to add
 
 		// Adds Actors toAdd
-		for (PolygonActor a : toAdd.toArray(new PolygonActor[0])) {
+		for (Actor a : toAdd.toArray(new Actor[0])) {
 			actors.add(a);
 		}
 		toAdd.clear();
 
 		// Collects dead actors in an array and moves live ones, checking for
 		// collisions
-		for (PolygonActor a : actors.toArray(new PolygonActor[0])) {
+		for (Actor a : actors.toArray(new Actor[0])) {
 			if (a.isDead()) {
 				toRemove.add(a);
 			} else {
@@ -70,13 +70,13 @@ public class Actors {
 
 				// Check for collisions. Uses a threadPool to maximize
 				// utilization of system resources and speed up processing.
-				threadPool.execute(new CollisionThread(a, actors.toArray(new PolygonActor[0])));
+				threadPool.execute(new CollisionThread(a, actors.toArray(new Actor[0])));
 			}
 
 		}
 
 		// Removes dead actors from the arrayList
-		for (PolygonActor a : toRemove.toArray(new PolygonActor[0])) {
+		for (Actor a : toRemove.toArray(new Actor[0])) {
 			if (!actors.remove(a))
 				GameEngine.log("Error in removing actor " + a.toString());
 		}
@@ -94,7 +94,7 @@ public class Actors {
 	 *            Graphics to be drawn with
 	 */
 	public void drawActors(Graphics g) {
-		for (PolygonActor a : actors.toArray(new PolygonActor[0])) {
+		for (Actor a : actors.toArray(new Actor[0])) {
 			a.draw(g);
 		}
 	}
@@ -104,7 +104,7 @@ public class Actors {
 	 * 
 	 * @return actors
 	 */
-	public ArrayList<PolygonActor> getArrayList() {
+	public ArrayList<Actor> getArrayList() {
 		return actors;
 	}
 

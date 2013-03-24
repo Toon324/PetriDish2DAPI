@@ -24,26 +24,24 @@ import javax.sound.sampled.Clip;
 public class GameEngine {
 
 	// Resources to use
-	final Font large = new Font("Serif", Font.BOLD, 30);
-	final Font small = new Font("Serif", Font.PLAIN, 12);
-	final Color transGray = new Color(Color.gray.getRed(),
-			Color.gray.getGreen(), Color.gray.getBlue(), 200);
+	public final Font large = new Font("Serif", Font.BOLD, 30);
+	public final Font small = new Font("Serif", Font.PLAIN, 12);
 
-	private GameMode mode;
+	private GameMode currentMode;
 	private long millis; // Used to calculate time between each frame
 
 	// GameModes
-	ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
+	protected ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
 	
-	ParticleEngine particleEngine;
+	public ParticleEngine particleEngine;
 
 	protected int score;
 
-	public static Point envSize = new Point(0, 0);
+	public static Point environmentSIze = new Point(0, 0);
 	public static PrintWriter debugWriter;
 	public static boolean debugMode;
 
-	int windowWidth, windowHeight, frames;
+	private int windowWidth, windowHeight, frames;
 	boolean ENTER;
 	ArrayList<Long> stepTimes;
 	Actors actors;
@@ -77,7 +75,7 @@ public class GameEngine {
 		
 		particleEngine = new ParticleEngine(this);
 		
-		mode = new GameMode(this);
+		currentMode = new GameMode(this);
 		
 		windowWidth = 800;
 		windowHeight = 600;
@@ -100,7 +98,7 @@ public class GameEngine {
 		if (stepTimes.size() > 10)
 			stepTimes.remove(0);
 
-		mode.run((int) (millis - lastMillis));
+		currentMode.run((int) (millis - lastMillis));
 		FPS = 1000 / average(stepTimes); // Calculates average FPS
 	}
 
@@ -129,7 +127,7 @@ public class GameEngine {
 	 *            Graphics to paint with.
 	 */
 	public void paint(Graphics g) {
-		mode.paint(g);
+		currentMode.paint(g);
 		g.setFont(large);
 		g.setColor(Color.blue);
 		if (debugMode) {
@@ -143,7 +141,7 @@ public class GameEngine {
 	 * @param newMode
 	 */
 	public void setMode(GameMode newMode) {
-		mode = newMode;
+		currentMode = newMode;
 	}
 
 	/**
@@ -153,7 +151,7 @@ public class GameEngine {
 	 * @param y
 	 */
 	public void clickedAt(MouseEvent e) {
-		mode.clicked(e.getX(), e.getY());
+		currentMode.clicked(e.getX(), e.getY());
 	}
 
 	/**
@@ -226,7 +224,7 @@ public class GameEngine {
 		if (e.getKeyChar() == KeyEvent.VK_ESCAPE)
 			System.exit(0);
 		else
-			mode.keyTyped(e);
+			currentMode.keyTyped(e);
 	}
 
 	/**
@@ -237,7 +235,7 @@ public class GameEngine {
 	 * @return True if mouse is over a Button
 	 */
 	public boolean isOver(MouseEvent e) {
-		return mode.isOver(e.getX(), e.getY());
+		return currentMode.isOver(e.getX(), e.getY());
 	}
 	
 	public int getScore() {
@@ -246,5 +244,27 @@ public class GameEngine {
 	
 	public void setScore(int newScore) {
 		score = newScore;
+	}
+	
+	public void addGameMode(GameMode newMode) {
+		gameModes.add(newMode);
+	}
+	
+	public void setCurrentGameMode(String nameOfMode) {
+		for (GameMode mode : gameModes)
+			if (mode.toString().equals(nameOfMode))
+				currentMode = mode;
+	}
+	
+	public void setCurrentGameMode(int indexOfMode) {
+		currentMode = gameModes.get(indexOfMode);
+	}
+	
+	public ArrayList<GameMode> getGameModes() {
+		return gameModes;
+	}
+
+	public Point getEnvironmentSize() {
+		return environmentSIze;
 	}
 }

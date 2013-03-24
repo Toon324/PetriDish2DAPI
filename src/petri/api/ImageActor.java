@@ -6,7 +6,7 @@ package petri.api;
 import java.awt.Graphics;
 
 /**
- * @author Cody
+ * @author Cody Swendrowski
  *
  */
 public abstract class ImageActor extends Actor {

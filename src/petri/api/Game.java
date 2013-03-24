@@ -195,4 +195,18 @@ public class Game extends Applet implements Runnable, MouseListener,
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // If it isn't, change
 															// back to default
 	}
+
+	/**
+	 * @return the engine
+	 */
+	public GameEngine getEngine() {
+		return engine;
+	}
+
+	/**
+	 * @param engine the engine to set
+	 */
+	public void setEngine(GameEngine engine) {
+		this.engine = engine;
+	}
 }

@@ -56,7 +56,7 @@ public class Particle extends PolygonActor {
 
 	@Override
 	public void setCenter(float x, float y) {
-		if (x < 0 || y < 0 || x > engine.windowWidth || y > engine.windowHeight) {
+		if (x < 0 || y < 0 || x > engine.getEnvironmentSize().x || y > engine.getEnvironmentSize().y) {
 			death = true;
 			return;
 		}

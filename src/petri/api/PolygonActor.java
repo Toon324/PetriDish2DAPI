@@ -147,28 +147,26 @@ public abstract class PolygonActor extends Actor{
 	/**
 	 * Checks to see if Actor is colliding with another Actor.
 	 * 
-	 * @param other
+	 * @param a
 	 *            Actor to check collision against
 	 */
-	public void checkCollision(PolygonActor other) {
-		if (other.equals(this))
+	public void checkCollision(Actor a) {
+		if (a.equals(this))
 			return;
 		int distance = 1;
-		if (other.basePoly != null && basePoly != null)
-			distance = Math.abs((other.basePoly.getBounds().x - basePoly.getBounds().x)
-				/ (other.basePoly.getBounds().y - basePoly.getBounds().y));
+		if (a.basePoly != null && basePoly != null)
+			distance = Math.abs((a.basePoly.getBounds().x - basePoly.getBounds().x)
+				/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
 		if (distance > 5
-				|| drawClr.toString()
-						.equalsIgnoreCase(other.drawClr.toString())
-				||  other instanceof Particle)
+				||  a instanceof Particle)
 			return;
 
-		Polygon otherPoly = other.basePoly;
+		Polygon otherPoly = a.basePoly;
 		for (int i = 0; i < otherPoly.npoints; i++) {
 			if (basePoly.contains(new Point(otherPoly.xpoints[i],
 					otherPoly.ypoints[i]))) {
 				setDeath(true);
-				other.setDeath(true);
+				a.setDeath(true);
 			}
 		}
 	}

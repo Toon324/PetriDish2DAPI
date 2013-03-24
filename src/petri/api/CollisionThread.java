@@ -7,25 +7,25 @@ package petri.api;
  */
 public class CollisionThread implements Runnable {
 
-	private PolygonActor actor;
-	private PolygonActor[] actors;
+	private Actor actor;
+	private Actor[] actors;
 
 	/**
 	 * Creates a new CollisionThread.
 	 * 
 	 * @param a
 	 *            Actor to check collisions with
-	 * @param objects
+	 * @param actors2
 	 *            Collection of Actors to check collisions against
 	 */
-	public CollisionThread(PolygonActor a, PolygonActor[] objects) {
+	public CollisionThread(Actor a, Actor[] actors2) {
 		actor = a;
-		actors = objects;
+		actors = actors2;
 	}
 
 	@Override
 	public void run() {
-		for (PolygonActor a : actors) {
+		for (Actor a : actors) {
 			if (!actor.equals(a))
 				actor.checkCollision(a);
 		}
