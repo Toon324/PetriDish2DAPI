@@ -4,17 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 
 /**
  * Handles all the game logic and painting based on the current game mode.
@@ -32,15 +27,15 @@ public class GameEngine {
 
 	// GameModes
 	protected ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
-	
+
 	public ParticleEngine particleEngine;
 	public SoundPlayer soundPlayer;
 
 	protected int score;
 
-	public static Point environmentSize = new Point(0, 0);
+	private Point environmentSize = new Point(0, 0);
 	public static PrintWriter debugWriter;
-	public static boolean debugMode;
+	private static boolean debugMode;
 
 	protected ArrayList<Long> stepTimes;
 	public Actors actors;
@@ -63,32 +58,31 @@ public class GameEngine {
 	/**
 	 * Creates a new GameEngine.
 	 * 
-	 * @param actors
-	 *            Array of actors to pass logic to.
 	 * @param debug
 	 *            If true, prints out debug messages.
 	 */
 	public GameEngine(boolean debug) {
 		actors = new Actors(this);
 		debugMode = debug;
-		
+
 		particleEngine = new ParticleEngine(this);
-		
+
 		currentMode = new GameMode(this);
-		
+
 		environmentSize.x = 800;
 		environmentSize.y = 600;
-		
+
 		millis = System.currentTimeMillis();
-		
+
 		stepTimes = new ArrayList<Long>();
 		stepTimes.add(millis);
-		
+
 		score = 0;
 	}
 
 	/**
-	 * Runs the game logic based on the current game mode.
+	 * Runs the game logic based on the current game mode. Calls
+	 * GameMode.run(int ms) on current GameMode.
 	 */
 	public void run() {
 		long lastMillis = millis;
@@ -120,7 +114,8 @@ public class GameEngine {
 	}
 
 	/**
-	 * Paints the game based on the current game mode.
+	 * Paints the game based on the current game mode. Calls
+	 * GameMode.paint(Graphics g) on current GameMode.
 	 * 
 	 * @param g
 	 *            Graphics to paint with.
@@ -187,37 +182,85 @@ public class GameEngine {
 	public boolean isOver(MouseEvent e) {
 		return currentMode.isOver(e.getX(), e.getY());
 	}
-	
+
+	/**
+	 * Returns the current score for the engine.
+	 * 
+	 * @return score
+	 */
 	public int getScore() {
 		return score;
 	}
-	
+
+	/**
+	 * Sets the current score for the engine.
+	 * 
+	 * @param newScore
+	 *            New score to set
+	 */
 	public void setScore(int newScore) {
 		score = newScore;
 	}
-	
+
+	/**
+	 * Adds a GameMode to the list of available GameModes.
+	 * 
+	 * @param newMode
+	 *            GameMode to add.
+	 */
 	public void addGameMode(GameMode newMode) {
 		gameModes.add(newMode);
 	}
-	
+
+	/**
+	 * Given the name of a GameMode, sets the current GameMode to the given
+	 * GameMode. Operates using GameMode.toString() and comparing nameOfMode to
+	 * the .toString().
+	 * 
+	 * @param nameOfMode
+	 *            String name of mode to switch to
+	 */
 	public void setCurrentGameMode(String nameOfMode) {
 		for (GameMode mode : gameModes)
 			if (mode.toString().equals(nameOfMode))
 				currentMode = mode;
 	}
-	
+
+	/**
+	 * Given the index of a GameMode in the current gameModes ArrayList,
+	 * switches to that GameMode.
+	 * 
+	 * @param indexOfMode
+	 *            Index of GameMode to switch to.
+	 */
 	public void setCurrentGameMode(int indexOfMode) {
 		currentMode = gameModes.get(indexOfMode);
 	}
-	
+
+	/**
+	 * Returns the current GameMode.
+	 * 
+	 * @return currentMode
+	 */
 	public GameMode getCurrentGameMode() {
 		return currentMode;
 	}
-	
+
+	/**
+	 * Returns the ArrayList of currently available GameModes.
+	 * 
+	 * @return gameModes
+	 */
 	public ArrayList<GameMode> getGameModes() {
 		return gameModes;
 	}
 
+	/**
+	 * Returns the current environment size, which is pulled from the current
+	 * window size.
+	 * 
+	 * @return environmentSize
+	 */
 	public Point getEnvironmentSize() {
 		return environmentSize;
 	}

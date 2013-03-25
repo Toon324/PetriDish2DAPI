@@ -11,11 +11,12 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 /**
- * The class that controls and owns all necessary objects.
+ * The class that takes Applet input and distributes it to GameEngine and
+ * current GameMode.
  * 
  * @author Cody Swendrowski
  */
-public class GameApplet extends Applet implements Runnable, MouseListener,
+public final class GameApplet extends Applet implements Runnable, MouseListener,
 		MouseMotionListener, KeyListener {
 
 	private static final long serialVersionUID = 42l;
@@ -26,7 +27,7 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 	private boolean debugMode;
 
 	/**
-	 * Creates a new game object.
+	 * Creates a new game applet.
 	 * 
 	 * @param debug
 	 *            If True, game prints out debug information.
@@ -43,9 +44,8 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 	}
 
 	/**
-	 * Called when game is first initialized. Sets all values and objects to
-	 * default state, and allows this class to listen to Mouse and Keyboard
-	 * input.
+	 * Called when game is first initialized. Allows this class to listen to
+	 * Mouse and Keyboard input.
 	 */
 	public void init() {
 		addMouseListener(this);
@@ -90,14 +90,14 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 
 	/**
 	 * Called to run the game. Will continue running until game is closed. All
-	 * game logic is called from here.
+	 * game logic calls stem from here.
 	 */
 	public synchronized void run() {
 		// run until stopped
 		while (true) {
-			//GameEngine.log("Running");
+			// GameEngine.log("Running");
 			while (canRun) {
-				
+
 				// controls game flow
 				engine.run();
 
@@ -201,10 +201,16 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		engine.onClose();
 	}
 
+	/**
+	 * Called to allow game logic to run.
+	 */
 	public void startGame() {
 		canRun = true;
 	}
 
+	/**
+	 * Called to stop game logic from running. Does not exit game.
+	 */
 	public void stopGame() {
 		canRun = false;
 	}
@@ -218,20 +224,25 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		else
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // If it isn't, change
 															// back to default
-		
+
 		engine.getCurrentGameMode().mouseMoved(e);
 	}
 
 	/**
-	 * @return the engine
+	 * Returns the GameEngine that the GameApplet is using.
+	 * 
+	 * @return engine
 	 */
 	public GameEngine getEngine() {
 		return engine;
 	}
 
 	/**
+	 * Sets the GameEngine that the GameApplet should use. This method is called
+	 * to replace the default GameEngine with an overridden varient.
+	 * 
 	 * @param engine
-	 *            the engine to set
+	 *            The GameEngine to set
 	 */
 	public void setEngine(GameEngine engine) {
 		this.engine = engine;

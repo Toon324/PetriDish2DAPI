@@ -44,7 +44,7 @@ public class Button {
 	}
 
 	/**
-	 * Draws the Button.
+	 * Draws the Button using the current color scheme.
 	 * 
 	 * @param g
 	 *            Graphics to draw with

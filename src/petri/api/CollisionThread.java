@@ -5,7 +5,7 @@ package petri.api;
  * 
  * @author Cody Swendrowski
  */
-public class CollisionThread implements Runnable {
+public final class CollisionThread implements Runnable {
 
 	private Actor actor;
 	private Actor[] actors;
