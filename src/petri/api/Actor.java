@@ -6,6 +6,14 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Float;
 
+/**
+ * The base class for all things that both move and paint. 
+ * Offers variables for position, size, velocity, health, direction facing, and max health.
+ * Offers methods for healing, damage, drawing, moving, collision checking, and death.
+ * 
+ * @author Cody Swendrowski
+ *
+ */
 public abstract class Actor {
 	
 	protected boolean death;
@@ -14,6 +22,10 @@ public abstract class Actor {
 	protected GameEngine engine;
 	protected int health, dir, maxHealth;
 	
+	/**
+	 * Creates a new Actor.
+	 * @param e GameEngine to utilize
+	 */
 	public Actor(GameEngine e) {
 		vectVel = new Point2D.Float(0,0);
 		center = new Point2D.Float(0,0);
