@@ -15,7 +15,7 @@ import petri.api.GameImage;
  */
 public class ExampleActor extends AnimatedImageActor {
 	
-	private final int MAX_CNT = 10;
+	private final int MAX_CNT = 500;
 	private int cnt;
 
 	/**
@@ -24,7 +24,7 @@ public class ExampleActor extends AnimatedImageActor {
 	 */
 	public ExampleActor(GameEngine e, GameImage i) {
 		super(e, i);
-		vectVel.x = 1;
+		vectVel.x = 10;
 		cnt = 0;
 		size.x = 50;
 		size.y = 50;
@@ -35,10 +35,12 @@ public class ExampleActor extends AnimatedImageActor {
 
 	@Override
 	public void move(int ms) {
-		super.move(ms);
 		cnt++;
-		if (cnt > MAX_CNT)
+		if (cnt > MAX_CNT) {
 			vectVel.x = -vectVel.x;
+			cnt = 0;
+		}
+		super.move(ms);
 	}
 
 	public Point2D.Float getSize() {
