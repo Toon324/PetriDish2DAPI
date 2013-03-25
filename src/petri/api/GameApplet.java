@@ -17,12 +17,13 @@ import java.awt.event.MouseMotionListener;
  */
 public class GameApplet extends Applet implements Runnable, MouseListener,
 		MouseMotionListener, KeyListener {
-	
+
 	private static final long serialVersionUID = 42l;
-	
+
 	private Thread th; // Game thread
 	private Thread close; // Used for closing the game
 	private GameEngine engine;
+	private boolean debugMode;
 
 	/**
 	 * Creates a new game object.
@@ -30,13 +31,15 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 	 * @param debug
 	 *            If True, game prints out debug information.
 	 */
-	public GameApplet() {
+	public GameApplet(boolean debug) {
+		debugMode = debug;
 		close = new Thread(new CloseHook(this));
 		th = new Thread(this);
 		Runtime.getRuntime().addShutdownHook(close);
 		GameEngine.log("Game has been initialized.");
 		GameEngine.log("Found " + Runtime.getRuntime().availableProcessors()
 				+ " processors to use");
+		canRun = false;
 	}
 
 	/**
@@ -48,7 +51,7 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addKeyListener(this);
-		engine = new GameEngine(false);
+		engine = new GameEngine(debugMode);
 		engine.setWindowSize(getWidth(), getHeight());
 
 	}
@@ -83,6 +86,8 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		th.start();
 	}
 
+	private boolean canRun;
+
 	/**
 	 * Called to run the game. Will continue running until game is closed. All
 	 * game logic is called from here.
@@ -90,16 +95,20 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 	public synchronized void run() {
 		// run until stopped
 		while (true) {
-			// controls game flow
-			engine.run();
+			//GameEngine.log("Running");
+			while (canRun) {
+				
+				// controls game flow
+				engine.run();
 
-			// repaint applet
-			repaint();
+				// repaint applet
+				repaint();
 
-			try {
-				wait(); // wait for applet to draw
-			} catch (Exception ex) {
-				System.out.println(ex.toString());
+				try {
+					wait(); // wait for applet to draw
+				} catch (Exception ex) {
+					GameEngine.log(ex.toString());
+				}
 			}
 		}
 	}
@@ -185,6 +194,14 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		engine.onClose();
 	}
 
+	public void startGame() {
+		canRun = true;
+	}
+
+	public void stopGame() {
+		canRun = false;
+	}
+
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		if (engine.isOver(e))
@@ -204,7 +221,8 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 	}
 
 	/**
-	 * @param engine the engine to set
+	 * @param engine
+	 *            the engine to set
 	 */
 	public void setEngine(GameEngine engine) {
 		this.engine = engine;

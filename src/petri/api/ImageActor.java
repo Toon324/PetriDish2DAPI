@@ -21,6 +21,10 @@ public abstract class ImageActor extends Actor {
 		image = i;
 		basePoly = i.getOutline();
 	}
+	
+	public void move(int ms) {
+		super.move(ms);
+	}
 
 	/* (non-Javadoc)
 	 * @see petri.api.Actor#draw(java.awt.Graphics)

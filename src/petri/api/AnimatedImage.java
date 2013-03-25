@@ -1,6 +1,8 @@
 package petri.api;
 
+import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -14,7 +16,6 @@ public class AnimatedImage extends GameImage {
 
 	private static final long serialVersionUID = -1217005359769960098L;
 	private ArrayList<Polygon> outlines = new ArrayList<Polygon>();
-	private int width, height;
 
 	/**
 	 * Creates a new container of a High and Low res Image of name s, and
@@ -23,24 +24,27 @@ public class AnimatedImage extends GameImage {
 	 * @param s
 	 *            Name of Image to read in
 	 */
-	public AnimatedImage(String s, int w, int h) {
+	public AnimatedImage(String s, int numHor, int numVert) {
 
+		numAcross = numHor;
+		numDown = numVert;
+		
 		try {
 			image = ImageIO.read(getClass().getResource(path + s));
 		} catch (Exception e) {
 			GameEngine.log("Error in Image retrevial for " + s);
 		}
-		width = w;
-		height = h;
+		width = image.getWidth()/numAcross;
+		height = image.getHeight()/numDown;
 		try {
-			int n = (image.getHeight() / h) * (image.getWidth() / w);
+			int n = numDown * numAcross;
 			for (int o = 0; o < n; o++) {
 				outlines.add(new Polygon());
 			}
 
-			for (int y = 0; y < image.getHeight() / h; y++) {
-				for (int x = 0; x < image.getWidth() / w; x++) {
-					generate(outlines.get(y * (image.getWidth() / w) + x),
+			for (int y = 0; y < numDown; y++) {
+				for (int x = 0; x < numAcross; x++) {
+					generate(outlines.get(y * numAcross + x),
 							width, height);
 				}
 			}
@@ -54,24 +58,27 @@ public class AnimatedImage extends GameImage {
 	 * @param p
 	 * @throws IOException
 	 */
-	public AnimatedImage(String s, String p, int w, int h) throws IOException {
+	public AnimatedImage(String p, String s, int numHor, int numVert) throws IOException {
+		
+		numAcross = numHor;
+		numDown = numVert;
 		path = p;
 		try {
 			image = ImageIO.read(getClass().getResource(path + s));
 		} catch (Exception e) {
 			GameEngine.log("Error in Image retrevial for " + s);
 		}
-		width = w;
-		height = h;
+		width = image.getWidth()/numAcross;
+		height = image.getHeight()/numDown;
 		try {
-			int n = (image.getHeight() / h) * (image.getWidth() / w);
+			int n = numDown * numAcross;
 			for (int o = 0; o < n; o++) {
 				outlines.add(new Polygon());
 			}
 
-			for (int y = 0; y < image.getHeight() / h; y++) {
-				for (int x = 0; x < image.getWidth() / w; x++) {
-					generate(outlines.get(y * (image.getWidth() / w) + x),
+			for (int y = 0; y < numDown; y++) {
+				for (int x = 0; x < numAcross; x++) {
+					generate(outlines.get(y * numAcross + x),
 							width, height);
 				}
 			}

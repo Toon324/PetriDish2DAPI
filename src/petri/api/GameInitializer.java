@@ -12,9 +12,9 @@ public final class GameInitializer {
 	GameApplet game;
 	JFrame frame;
 	
-	public GameInitializer(String name) {
+	public GameInitializer(String name, boolean debug) {
 		// Sets up game
-		game = new GameApplet();
+		game = new GameApplet(debug);
 		frame = new JFrame(name);
 
 		// Initializes game
@@ -26,9 +26,6 @@ public final class GameInitializer {
 		frame.setSize(800, 600);
 		frame.setResizable(true);
 		frame.setVisible(true);
-
-		// Runs game
-		game.run();
 	}
 
 
@@ -38,5 +35,16 @@ public final class GameInitializer {
 	
 	public JFrame getFrame() {
 		return frame;
+	}
+
+
+	public void startGame() {
+		game.startGame();
+		// Runs game
+		game.run();
+	}
+	
+	public void stopGame() {
+		game.stopGame();
 	}
 }

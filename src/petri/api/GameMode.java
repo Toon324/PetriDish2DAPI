@@ -100,4 +100,7 @@ public class GameMode {
 		
 	}
 
+	public String toString() {
+		return "GameMode";
+	}
 }

@@ -4,17 +4,20 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.awt.geom.Point2D.Float;
 
 public abstract class Actor {
 	
 	protected boolean death;
-	protected Point2D.Float center;
+	protected Point2D.Float center, size, vectVel; // speed in pixels/s
 	protected Polygon basePoly;
 	protected GameEngine engine;
-	protected Point2D.Float vectVel; // speed in pixels/s
 	protected int health, dir, maxHealth;
 	
 	public Actor(GameEngine e) {
+		vectVel = new Point2D.Float(0,0);
+		center = new Point2D.Float(0,0);
+		size = new Point2D.Float(0,0);
 		death = false;
 		engine = e;
 		basePoly = new Polygon();
@@ -91,6 +94,8 @@ public abstract class Actor {
 		if (a.equals(this))
 			return;
 		int distance = 1;
+		if (a.basePoly.getBounds().y - basePoly.getBounds().y == 0)
+			return;
 		if (a.basePoly != null && basePoly != null)
 			distance = Math.abs((a.basePoly.getBounds().x - basePoly.getBounds().x)
 				/ (a.basePoly.getBounds().y - basePoly.getBounds().y));

@@ -47,7 +47,7 @@ public class GameEngine {
 	protected double FPS;
 
 	static {
-		File file = new File("petri/api/resources/debug.txt");
+		File file = new File("bin/petri/api/resources/debug.txt");
 		try {
 			if (!file.exists())
 				file.createNewFile();
