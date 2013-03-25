@@ -1,7 +1,7 @@
 /**
  * 
  */
-package petri.api.example;
+package petri.api.Examples.BasicExample;
 
 import petri.api.*;
 

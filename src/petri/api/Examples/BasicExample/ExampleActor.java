@@ -1,7 +1,7 @@
 /**
  * 
  */
-package petri.api.example;
+package petri.api.Examples.BasicExample;
 
 import java.awt.geom.Point2D;
 

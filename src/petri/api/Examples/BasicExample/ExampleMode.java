@@ -1,4 +1,4 @@
-package petri.api.example;
+package petri.api.Examples.BasicExample;
 
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
