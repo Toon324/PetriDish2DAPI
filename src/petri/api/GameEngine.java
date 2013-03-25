@@ -144,16 +144,6 @@ public class GameEngine {
 	}
 
 	/**
-	 * Called when a click occurs, sends the click to the current gameMode.
-	 * 
-	 * @param x
-	 * @param y
-	 */
-	public void clickedAt(MouseEvent e) {
-		currentMode.clicked(e.getX(), e.getY());
-	}
-
-	/**
 	 * Sets the current size of the window to draw in.
 	 * 
 	 * @param width
@@ -185,19 +175,6 @@ public class GameEngine {
 			System.out.println(s);
 		}
 		debugWriter.println(s);
-	}
-
-	/**
-	 * Accepts keyEvents when a key is typed. Exits on ESC.
-	 * 
-	 * @param e
-	 *            KeyEvent to handle
-	 */
-	public void keyTyped(KeyEvent e) {
-		if (e.getKeyChar() == KeyEvent.VK_ESCAPE)
-			System.exit(0);
-		else
-			currentMode.keyTyped(e);
 	}
 
 	/**

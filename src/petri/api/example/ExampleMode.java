@@ -1,6 +1,7 @@
 package petri.api.example;
 
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import petri.api.AnimatedImage;
@@ -30,9 +31,9 @@ public class ExampleMode extends GameMode {
 	}
 
 	@Override
-	public void clicked(int x, int y) {
+	public void clickedAt(MouseEvent e) {
 		ExampleActor ea = new ExampleActor(engine, exampleImage);
-		ea.setCenter(x, y);
+		ea.setCenter(e.getX()-(ea.getSize().x/2), e.getY()-(ea.getSize().y/2));
 		engine.actors.add(ea);
 	}
 

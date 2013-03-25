@@ -151,40 +151,47 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		engine.getCurrentGameMode().keyPressed(e);
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		engine.getCurrentGameMode().keyReleased(e);
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		engine.keyTyped(e);
+		engine.getCurrentGameMode().keyTyped(e);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		engine.clickedAt(e);
+		engine.getCurrentGameMode().clickedAt(e);
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
+		engine.getCurrentGameMode().mouseEntered(e);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		engine.getCurrentGameMode().mouseExited(e);
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		engine.getCurrentGameMode().mousePressed(e);
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		engine.getCurrentGameMode().mouseReleased(e);
 	}
 
 	@Override
-	public void mouseDragged(MouseEvent arg0) {
+	public void mouseDragged(MouseEvent e) {
+		engine.getCurrentGameMode().mouseDragged(e);
 	}
 
 	/**
@@ -211,6 +218,8 @@ public class GameApplet extends Applet implements Runnable, MouseListener,
 		else
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); // If it isn't, change
 															// back to default
+		
+		engine.getCurrentGameMode().mouseMoved(e);
 	}
 
 	/**

@@ -3,6 +3,8 @@
  */
 package petri.api.example;
 
+import java.awt.geom.Point2D;
+
 import petri.api.AnimatedImageActor;
 import petri.api.GameEngine;
 import petri.api.GameImage;
@@ -37,6 +39,10 @@ public class ExampleActor extends AnimatedImageActor {
 		cnt++;
 		if (cnt > MAX_CNT)
 			vectVel.x = -vectVel.x;
+	}
+
+	public Point2D.Float getSize() {
+		return size;
 	}
 
 }

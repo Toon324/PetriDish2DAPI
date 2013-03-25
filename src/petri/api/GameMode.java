@@ -38,24 +38,6 @@ public class GameMode {
 	}
 
 	/**
-	 * Recieves MouseClick data.
-	 * 
-	 * @param x
-	 *            MouseClick X value
-	 * @param y
-	 *            MouseClick Y value
-	 */
-	public void clicked(int x, int y) {
-		try {
-			for (int i = 0; i < buttons.size(); i++) {
-				buttons.get(i).checkClick(x, y);
-			}
-		} catch (java.lang.NullPointerException e) {
-			GameEngine.log("No defined buttons in " + this.toString());
-		}
-	}
-
-	/**
 	 * Paints the necessary components in GameMode.
 	 * 
 	 * @param g
@@ -92,15 +74,41 @@ public class GameMode {
 		return false;
 	}
 
-	/**
-	 * Accepts keyboard input.
-	 * @param e KeyEvent
-	 */
-	public void keyTyped(KeyEvent e) {
-		
-	}
-
 	public String toString() {
 		return "GameMode";
 	}
+	
+	public void clickedAt(MouseEvent e) {
+		try {
+			for (int i = 0; i < buttons.size(); i++) {
+				buttons.get(i).checkClick(e.getX(), e.getY());
+			}
+		} catch (java.lang.NullPointerException ex) {
+			GameEngine.log("No defined buttons in " + this.toString());
+		}
+	}
+
+	/**
+	 * Accepts keyboard input.
+	 * 
+	 * @param e
+	 *            KeyEvent
+	 */
+	public void keyTyped(KeyEvent e) {}
+	
+	public void mouseMoved(MouseEvent e) {}
+
+	public void mouseDragged(MouseEvent e) {}
+
+	public void mouseReleased(MouseEvent e) {}
+
+	public void mousePressed(MouseEvent e) {}
+
+	public void mouseExited(MouseEvent e) {}
+
+	public void mouseEntered(MouseEvent e) {}
+
+	public void keyReleased(KeyEvent e) {}
+
+	public void keyPressed(KeyEvent e) {}
 }
