@@ -11,9 +11,9 @@ import java.util.concurrent.*;
  * 
  * @author Cody Swendrowski
  */
-public class Actors {
+public final class Actors {
 
-	private final int MAX_ACTORS = 1000;
+	private final int MAX_ACTORS = 10000;
 	private ArrayList<Actor> actors = new ArrayList<Actor>();
 	private ArrayList<Actor> toAdd = new ArrayList<Actor>();
 	private GameEngine engine;
@@ -22,15 +22,16 @@ public class Actors {
 	/**
 	 * Creates a new container of Actor.
 	 * 
-	 * @param debug
 	 * @param gameEngine
+	 *            Engine to utilize
 	 */
 	public Actors(GameEngine gameEngine) {
 		engine = gameEngine;
 	}
 
 	/**
-	 * Adds a created Actor to actors.
+	 * Adds a created Actor to current ArrayList. Does not add Actor if
+	 * ArrayList is currently meeting or exceeding MAX_ACTORS.
 	 * 
 	 * @param a
 	 *            Actor to be added
@@ -41,18 +42,23 @@ public class Actors {
 		}
 		toAdd.add(a);
 	}
-	
+
 	/**
 	 * Moves and checks for death all actors which are alive. Removes all dead
 	 * actors.
 	 * 
-	 * All arraylist iterations are first converted to array to avoid concurrent
+	 * All ArrayList iterations are first converted to array to avoid concurrent
 	 * modification.
+	 * 
+	 * @param ms
+	 *            Time since last call in Milliseconds
 	 */
 	public void handleActors(int ms) {
 		ArrayList<Actor> toRemove = new ArrayList<Actor>(); // Dead objects to
 															// be removed
-		ArrayList<Point2D.Float> particles = new ArrayList<Point2D.Float>(); // Particles to add
+		ArrayList<Point2D.Float> particles = new ArrayList<Point2D.Float>(); // Particles
+																				// to
+																				// add
 
 		// Adds Actors toAdd
 		for (Actor a : toAdd.toArray(new Actor[0])) {
@@ -70,7 +76,8 @@ public class Actors {
 
 				// Check for collisions. Uses a threadPool to maximize
 				// utilization of system resources and speed up processing.
-				threadPool.execute(new CollisionThread(a, actors.toArray(new Actor[0])));
+				threadPool.execute(new CollisionThread(a, actors
+						.toArray(new Actor[0])));
 			}
 
 		}

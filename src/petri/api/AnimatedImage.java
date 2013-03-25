@@ -1,16 +1,15 @@
 package petri.api;
 
-import java.awt.Image;
 import java.awt.Polygon;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 
 /**
- * @author Cody Swendrowski
+ * A GameImage that divide up the given image into frames. Each frame has its
+ * own generated outline, stored in an ArrayList of Polygons.
  * 
+ * @author Cody Swendrowski
  */
 public class AnimatedImage extends GameImage {
 
@@ -18,24 +17,26 @@ public class AnimatedImage extends GameImage {
 	private ArrayList<Polygon> outlines = new ArrayList<Polygon>();
 
 	/**
-	 * Creates a new container of a High and Low res Image of name s, and
-	 * generates an outline.
+	 * Creates a new AnimatedImage. Divides image into frame using the given
+	 * user data.
 	 * 
 	 * @param s
 	 *            Name of Image to read in
+	 * @param numHor
+	 *            Number of frames in image, horizontally
+	 * @param numVert
+	 *            Number of frames in image, vertically
+	 * @throws IOException
+	 *             If given Image is not found, an IOException is thrown
 	 */
-	public AnimatedImage(String s, int numHor, int numVert) {
+	public AnimatedImage(String s, int numHor, int numVert) throws IOException {
 
 		numAcross = numHor;
 		numDown = numVert;
-		
-		try {
-			image = ImageIO.read(getClass().getResource(path + s));
-		} catch (Exception e) {
-			GameEngine.log("Error in Image retrevial for " + s);
-		}
-		width = image.getWidth()/numAcross;
-		height = image.getHeight()/numDown;
+
+		image = ImageIO.read(getClass().getResource(path + s));
+		width = image.getWidth() / numAcross;
+		height = image.getHeight() / numDown;
 		try {
 			int n = numDown * numAcross;
 			for (int o = 0; o < n; o++) {
@@ -44,8 +45,7 @@ public class AnimatedImage extends GameImage {
 
 			for (int y = 0; y < numDown; y++) {
 				for (int x = 0; x < numAcross; x++) {
-					generate(outlines.get(y * numAcross + x),
-							width, height);
+					generate(outlines.get(y * numAcross + x), width, height);
 				}
 			}
 		} catch (Exception e) {
@@ -54,22 +54,29 @@ public class AnimatedImage extends GameImage {
 	}
 
 	/**
-	 * @param s
+	 * Creates a new AnimatedImage. Divides image into frame using the given
+	 * user data.
+	 * 
 	 * @param p
+	 *            Path that the Image is located at
+	 * @param s
+	 *            Name of Image to read in
+	 * @param numHor
+	 *            Number of frames in image, horizontally
+	 * @param numVert
+	 *            Number of frames in image, vertically
 	 * @throws IOException
+	 *             If given Image is not found, an IOException is thrown
 	 */
-	public AnimatedImage(String p, String s, int numHor, int numVert) throws IOException {
-		
+	public AnimatedImage(String p, String s, int numHor, int numVert)
+			throws IOException {
+
 		numAcross = numHor;
 		numDown = numVert;
 		path = p;
-		try {
-			image = ImageIO.read(getClass().getResource(path + s));
-		} catch (Exception e) {
-			GameEngine.log("Error in Image retrevial for " + s);
-		}
-		width = image.getWidth()/numAcross;
-		height = image.getHeight()/numDown;
+		image = ImageIO.read(getClass().getResource(path + s));
+		width = image.getWidth() / numAcross;
+		height = image.getHeight() / numDown;
 		try {
 			int n = numDown * numAcross;
 			for (int o = 0; o < n; o++) {
@@ -78,8 +85,7 @@ public class AnimatedImage extends GameImage {
 
 			for (int y = 0; y < numDown; y++) {
 				for (int x = 0; x < numAcross; x++) {
-					generate(outlines.get(y * numAcross + x),
-							width, height);
+					generate(outlines.get(y * numAcross + x), width, height);
 				}
 			}
 		} catch (Exception e) {
@@ -87,6 +93,17 @@ public class AnimatedImage extends GameImage {
 		}
 	}
 
+	/**
+	 * Helper method. Generates an outline that is stored in given Polygon. See
+	 * GameImage.generate for more information on how this is done.
+	 * 
+	 * @param outline
+	 *            Polygon to store outline in
+	 * @param w
+	 *            Width of frame
+	 * @param h
+	 *            Height of frame
+	 */
 	private void generate(Polygon outline, int w, int h) {
 
 		for (int x = w; x < w + width; x++) {

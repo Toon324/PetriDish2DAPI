@@ -7,37 +7,40 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Float;
 
 /**
- * The base class for all things that both move and paint. 
- * Offers variables for position, size, velocity, health, direction facing, and max health.
- * Offers methods for healing, damage, drawing, moving, collision checking, and death.
+ * The base class for all things that both move and paint. Offers variables for
+ * position, size, velocity, health, direction facing, and max health. Offers
+ * methods for healing, damage, drawing, moving, collision checking, and death.
  * 
  * @author Cody Swendrowski
- *
+ * 
  */
 public abstract class Actor {
-	
-	protected boolean death;
+
+	protected boolean death, collision;
 	protected Point2D.Float center, size, vectVel; // speed in pixels/s
 	protected Polygon basePoly;
 	protected GameEngine engine;
 	protected int health, dir, maxHealth;
-	
+
 	/**
 	 * Creates a new Actor.
-	 * @param e GameEngine to utilize
+	 * 
+	 * @param e
+	 *            GameEngine to utilize
 	 */
 	public Actor(GameEngine e) {
-		vectVel = new Point2D.Float(0,0);
-		center = new Point2D.Float(0,0);
-		size = new Point2D.Float(0,0);
+		vectVel = new Point2D.Float(0, 0);
+		center = new Point2D.Float(0, 0);
+		size = new Point2D.Float(0, 0);
 		death = false;
+		collision = false;
 		engine = e;
 		basePoly = new Polygon();
 		health = 0;
 		dir = 0;
 		maxHealth = 0;
 	}
-	
+
 	/**
 	 * Returns center of Actor in a Point2D.Float format.
 	 * 
@@ -55,16 +58,20 @@ public abstract class Actor {
 	public Point2D.Float getVelocity() {
 		return vectVel;
 	}
-	
+
+	/**
+	 * Draws the Actor.
+	 * 
+	 * @param g
+	 *            Graphics to draw with
+	 */
 	public abstract void draw(Graphics g);
-	
+
 	/**
 	 * Moves the Actor.
 	 * 
-	 * @param w
-	 *            Width of window to draw in
-	 * @param h
-	 *            Height of window to draw in
+	 * @param ms
+	 *            Time since last call in Milliseconds
 	 */
 	public void move(int ms) {
 		setCenter(center.x + (ms / 1000F) * vectVel.x, center.y + (ms / 1000F)
@@ -79,17 +86,35 @@ public abstract class Actor {
 	public boolean isDead() {
 		return death;
 	}
-	
+
+	/**
+	 * Returns the amount of health an Actor has, in int form
+	 * 
+	 * @return health
+	 */
 	public int getHealth() {
 		return health;
 	}
-	
+
+	/**
+	 * Deals damage to the Actor. If Actor health is less than or equal to 0,
+	 * sets Actor to dead.
+	 * 
+	 * @param damage
+	 *            Amount of damage to deal to Actor.
+	 */
 	public void dealDamage(int damage) {
 		health -= damage;
 		if (health <= 0)
 			death = true;
 	}
-	
+
+	/**
+	 * Heals the Actor up to max health amount.
+	 * 
+	 * @param healAmt
+	 *            Max amount to heal by
+	 */
 	public void heal(int healAmt) {
 		health += healAmt;
 		if (health >= maxHealth)
@@ -97,7 +122,9 @@ public abstract class Actor {
 	}
 
 	/**
-	 * Checks to see if Actor is colliding with another Actor.
+	 * Checks to see if Actor is colliding with another Actor. This method
+	 * checks to see if either of the Polygons that contain collision points are
+	 * intersecting, and if they are, sets boolean collision to true.
 	 * 
 	 * @param a
 	 *            Actor to check collision against
@@ -109,18 +136,18 @@ public abstract class Actor {
 		if (a.basePoly.getBounds().y - basePoly.getBounds().y == 0)
 			return;
 		if (a.basePoly != null && basePoly != null)
-			distance = Math.abs((a.basePoly.getBounds().x - basePoly.getBounds().x)
-				/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
-		if (distance > 5
-				||  a instanceof Particle)
+			distance = Math.abs((a.basePoly.getBounds().x - basePoly
+					.getBounds().x)
+					/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
+		if (distance > 5 || a instanceof Particle)
 			return;
 
 		Polygon otherPoly = a.basePoly;
 		for (int i = 0; i < otherPoly.npoints; i++) {
 			if (basePoly.contains(new Point(otherPoly.xpoints[i],
 					otherPoly.ypoints[i]))) {
-				setDeath(true);
-				a.setDeath(true);
+				collision = true;
+				a.collision = true;
 			}
 		}
 	}
@@ -134,7 +161,7 @@ public abstract class Actor {
 	 *            Y co-ordinate of center
 	 */
 	public void setCenter(float x, float y) {
-		center = new Point2D.Float(x,y);
+		center = new Point2D.Float(x, y);
 	}
 
 	/**
@@ -148,6 +175,23 @@ public abstract class Actor {
 	}
 
 	/**
+	 * Returns true IFF checkCollision has detected a collision.
+	 * 
+	 * @return collision
+	 */
+	public boolean isColliding() {
+		return collision;
+	}
+
+	/**
+	 * Sets boolean collision to false. Used to allow Actor to check for a new
+	 * collision.
+	 */
+	public void clearCollision() {
+		collision = false;
+	}
+
+	/**
 	 * Allows System to print name of object. Returns the name of the Actor
 	 * 
 	 * @return "Actor"
@@ -155,5 +199,5 @@ public abstract class Actor {
 	public String toString() {
 		return "Actor";
 	}
-	
+
 }
