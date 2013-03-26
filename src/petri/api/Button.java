@@ -19,9 +19,8 @@ public class Button {
 	protected String text;
 	protected boolean clicked, enabled;
 	protected Polygon bounds;
-	protected Color c1, c2;
+	protected Color c1, c2, font;
 	protected Font f = new Font("Serif", Font.BOLD, 25);
-	
 
 	/**
 	 * Creates a new Button.
@@ -38,6 +37,8 @@ public class Button {
 		clicked = false;
 		c1 = Color.black;
 		c2 = Color.white;
+		font = Color.black;
+		bounds = new Polygon();
 		text = s;
 		x_pos = x;
 		y_pos = y;
@@ -97,7 +98,7 @@ public class Button {
 		// Draws inner section of the Button
 		g.fillPolygon(inside);
 		g.fillRect(x_pos, y_pos, width, height);
-		g.setColor(Color.cyan);
+		g.setColor(font);
 		g.drawString(text, x_pos + 10, y_pos + 23);
 
 		// Resets graphics to whatever Color it was originally
@@ -239,10 +240,21 @@ public class Button {
 		x_pos = x;
 		y_pos = y;
 	}
-	
-	public void setColorScheme(Color newC1, Color newC2) {
+
+	/**
+	 * Sets the color scheme used to draw the Button.
+	 * 
+	 * @param newC1
+	 *            Color to use as outline around Button
+	 * @param newC2
+	 *            Color to fill Button with
+	 * @param newFont
+	 *            Color to draw text with
+	 */
+	public void setColorScheme(Color newC1, Color newC2, Color newFont) {
 		c1 = newC1;
 		c2 = newC2;
+		font = newFont;
 	}
 
 	/**
@@ -253,5 +265,15 @@ public class Button {
 	 */
 	public void setString(String s) {
 		text = s;
+	}
+
+	/**
+	 * Copies the current color scheme of this Button to another Button.
+	 * 
+	 * @param other
+	 *            Button to transfer color scheme to
+	 */
+	public void copyColorSchemeTo(Button other) {
+		other.setColorScheme(c1, c2, font);
 	}
 }

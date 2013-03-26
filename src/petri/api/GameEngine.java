@@ -2,9 +2,11 @@ package petri.api;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -69,7 +71,7 @@ public class GameEngine {
 		particleEngine = new ParticleEngine(this);
 		networkAdapter = new NetworkAdapter();
 		soundPlayer = new SoundPlayer();
-		
+
 		currentMode = new GameMode(this);
 
 		environmentSize.x = 800;
@@ -130,6 +132,31 @@ public class GameEngine {
 		if (debugMode) {
 			g.drawString(String.format("%6.2f", FPS), 10, 30);
 		}
+	}
+
+	/**
+	 * Given a String, draws it centered between two bounds. Calculates this
+	 * center using the current boundaries of the FontMetrics of the Graphics
+	 * provided.
+	 * 
+	 * @param g
+	 *            Graphics to draw with
+	 * @param s
+	 *            String to draw centered
+	 * @param leftBound
+	 *            Left boundary of area to center
+	 * @param rightBound
+	 *            Right boundary of area to center
+	 * @param y
+	 *            Location to draw the text vertically
+	 */
+	public void centerTextHorizontally(Graphics g, String s, int leftBound,
+			int rightBound, int y) {
+		FontMetrics fm = g.getFontMetrics();
+		Rectangle2D bounds = fm.getStringBounds(s, g);
+		int width = (int) bounds.getWidth();
+
+		g.drawString(s, ((rightBound - leftBound) / 2) - (width / 2), y);
 	}
 
 	/**
