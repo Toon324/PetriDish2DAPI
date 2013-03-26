@@ -50,7 +50,7 @@ public final class GameInitializer {
 	/**
 	 * Returns the current GameEngine.
 	 * 
-	 * @return
+	 * @return the GameEngine
 	 */
 	public GameEngine getEngine() {
 		return game.getEngine();

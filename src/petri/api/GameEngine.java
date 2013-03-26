@@ -30,6 +30,7 @@ public class GameEngine {
 
 	public ParticleEngine particleEngine;
 	public SoundPlayer soundPlayer;
+	public NetworkAdapter networkAdapter;
 
 	protected int score;
 
@@ -66,7 +67,9 @@ public class GameEngine {
 		debugMode = debug;
 
 		particleEngine = new ParticleEngine(this);
-
+		networkAdapter = new NetworkAdapter();
+		soundPlayer = new SoundPlayer();
+		
 		currentMode = new GameMode(this);
 
 		environmentSize.x = 800;

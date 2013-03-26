@@ -60,8 +60,6 @@ public abstract class PolygonActor extends Actor {
 	/**
 	 * Draws the Actor.
 	 * 
-	 * @param p
-	 *            Corner of the screen to draw in reference to
 	 * @param g
 	 *            Graphics to be drawn with
 	 */

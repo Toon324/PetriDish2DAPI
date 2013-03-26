@@ -103,7 +103,7 @@ public class GameImage extends Component {
 	 * other point is added, and the newly built Polygon is returned. This leads
 	 * to faster collision checking.
 	 * 
-	 * @author Dan Miller
+	 * Written by Dan Miller
 	 * @param poly
 	 *            Polygon to remove extra points from
 	 * @param radianVariance
