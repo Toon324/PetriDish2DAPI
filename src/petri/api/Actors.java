@@ -128,7 +128,7 @@ public final class Actors {
 	public void addParticle(Point2D.Float center, Point2D.Float vectorSpeed,
 			Color c) {
 		Particle p = new Particle(engine, vectorSpeed, c);
-		p.setCenter(center);
+		p.setCenter(center.x,center.y);
 		add(p);
 	}
 
