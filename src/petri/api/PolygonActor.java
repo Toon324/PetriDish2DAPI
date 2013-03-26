@@ -9,14 +9,16 @@ import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 
 /**
- * Generic class for all objects in the game that both move and paint.
+ * A variant of Actor that draws itself with a Polygon. Useful for drawing
+ * shapes.
  * 
  * @author Cody Swendrowski
  */
-public abstract class PolygonActor extends Actor{
+public abstract class PolygonActor extends Actor {
 
 	protected Color drawClr;
 	protected Polygon drawPoly;
+	protected boolean centerLines;
 
 	/**
 	 * Creates a new Actor.
@@ -31,6 +33,7 @@ public abstract class PolygonActor extends Actor{
 		vectVel = new Point2D.Float(0, 0);
 		center = new Point2D.Float(0, 0);
 		drawClr = Color.cyan;
+		centerLines = false;
 	}
 
 	/**
@@ -67,7 +70,7 @@ public abstract class PolygonActor extends Actor{
 		if (drawPoly == null)
 			drawPoly = basePoly;
 
-		drawPoly(g, drawPoly, new Point((int) center.x, (int) center.y), true);
+		drawPoly(g, drawPoly, new Point((int) center.x, (int) center.y));
 	}
 
 	/**
@@ -82,10 +85,9 @@ public abstract class PolygonActor extends Actor{
 	 * @param centerLines
 	 *            If true, draws lines from all points to center
 	 */
-	private void drawPoly(Graphics g, Polygon p, Point thisCenter,
-			boolean centerLines) {
-		
-		//If there is no Polygon, return
+	private void drawPoly(Graphics g, Polygon p, Point thisCenter) {
+
+		// If there is no Polygon, return
 		if (p == null)
 			return;
 
@@ -93,8 +95,9 @@ public abstract class PolygonActor extends Actor{
 		int res;
 		float array[] = new float[6];
 		PathIterator iter = p.getPathIterator(new AffineTransform());
-		
-		//Iterate through the Path of the Polygon, drawing lines according to data provided
+
+		// Iterate through the Path of the Polygon, drawing lines according to
+		// data provided
 		while (!iter.isDone()) {
 			res = iter.currentSegment(array);
 			switch (res) {
@@ -104,7 +107,7 @@ public abstract class PolygonActor extends Actor{
 			case PathIterator.SEG_LINETO:
 				g.drawLine(x, y, (int) array[0], (int) array[1]);
 
-				//Draws lines to center if boolean is true
+				// Draws lines to center if boolean is true
 				if (centerLines)
 					g.drawLine(x, y, (int) thisCenter.x, (int) thisCenter.y);
 
@@ -121,7 +124,7 @@ public abstract class PolygonActor extends Actor{
 			iter.next();
 		}
 	}
-	
+
 	/**
 	 * Sets the center of the Actor by first transforming the basePoly (and
 	 * drawPoly if not null) to (0,0), then transforms to new center.
@@ -132,18 +135,30 @@ public abstract class PolygonActor extends Actor{
 	 *            Y co-ordinate of center
 	 */
 	public void setCenter(float x, float y) {
-		//Translates to (0,0)
+		// Translates to (0,0)
 		if (drawPoly != null)
 			drawPoly.translate((int) -center.x, (int) -center.y);
 		basePoly.translate((int) -center.x, (int) -center.y);
-		
-		//Translates to new center
+
+		// Translates to new center
 		center = new Point2D.Float(x, y);
 		if (drawPoly != null)
 			drawPoly.translate((int) center.x, (int) center.y);
 		basePoly.translate((int) center.x, (int) center.y);
 	}
-	
+
+	/**
+	 * Sets if the PolygonActor should draw lines from all points in the Polygon
+	 * to the center. This is used as a nice visual effect without affecting
+	 * collision efficiency.
+	 * 
+	 * @param cl
+	 *            if true, draws center lines.
+	 */
+	public void setCenterLines(boolean cl) {
+		centerLines = cl;
+	}
+
 	/**
 	 * Checks to see if Actor is colliding with another Actor.
 	 * 
@@ -155,10 +170,10 @@ public abstract class PolygonActor extends Actor{
 			return;
 		int distance = 1;
 		if (a.basePoly != null && basePoly != null)
-			distance = Math.abs((a.basePoly.getBounds().x - basePoly.getBounds().x)
-				/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
-		if (distance > 5
-				||  a instanceof Particle)
+			distance = Math.abs((a.basePoly.getBounds().x - basePoly
+					.getBounds().x)
+					/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
+		if (distance > 5 || a instanceof Particle)
 			return;
 
 		Polygon otherPoly = a.basePoly;

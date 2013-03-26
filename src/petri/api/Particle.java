@@ -5,50 +5,51 @@ import java.awt.Graphics;
 import java.awt.geom.Point2D;
 
 /**
- * Fundamentally the same as a Bullet, but doesn't collide with other actors due
- * to class name.
+ * A non-colliding Actor that is used for particle effects. Kills itself if it
+ * is outside of the visible area.
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 public class Particle extends PolygonActor {
 
-	private int alpha;
-	
+	protected int alpha;
+
 	/**
 	 * Creates a new Particle.
 	 * 
 	 * @param e
 	 *            GameEngine to utilize
 	 * @param vectorSpeed
-	 *            Speed of Actor
+	 *            Speed of Actor in pixels per second
 	 * @param c
-	 *            Color to draw with
+	 *            Color of Particle
 	 */
-	public Particle (GameEngine e, Point2D.Float vectorSpeed, Color c) {
+	public Particle(GameEngine e, Point2D.Float vectorSpeed, Color c) {
 		super(e);
 		alpha = 255;
 		vectVel = vectorSpeed;
 		drawClr = c;
-		
-		//Size of particle
+
+		// Size of particle
 		basePoly.addPoint(0, 0);
 		basePoly.addPoint(4, 0);
 		basePoly.addPoint(4, 4);
 		basePoly.addPoint(0, 4);
 	}
 
+	@Override
 	public void draw(Graphics g) {
 		// Draws a fading tail behind the Particle
 		for (int a = 0; a <= 10; a += 1) {
 			drawClr = new Color(drawClr.getRed(), drawClr.getGreen(),
 					drawClr.getBlue(), alpha / (a + 1));
 			g.setColor(drawClr);
-			g.fillRect((int) (center.x - vectVel.x/6 * a),
-					(int) (center.y - vectVel.y/6 * a), 4, 4);
-			//engine.log("Drawn at " + (center.x - vectVel.x*a) + ", " + (center.y - vectVel.y*a));
+			g.fillRect((int) (center.x - vectVel.x / 6 * a),
+					(int) (center.y - vectVel.y / 6 * a), 4, 4);
 		}
 	}
 
+	@Override
 	public void move(int ms) {
 		setCenter(center.x + (vectVel.x * (ms / 100f)), center.y
 				+ (vectVel.y * (ms / 100f)));
@@ -56,22 +57,21 @@ public class Particle extends PolygonActor {
 
 	@Override
 	public void setCenter(float x, float y) {
-		if (x < 0 || y < 0 || x > engine.getEnvironmentSize().x || y > engine.getEnvironmentSize().y) {
+		if (x < 0 || y < 0 || x > engine.getEnvironmentSize().x
+				|| y > engine.getEnvironmentSize().y) {
 			death = true;
 			return;
 		}
 		super.setCenter(x, y);
 	}
-	
-	public void checkCollision(PolygonActor other) {
-		return; //Particle does not collide
-	}
-	
-	public String toString() {
-		return "Particle";
+
+	@Override
+	public void checkCollision(Actor other) {
+		return; // Particle does not collide
 	}
 
-	public void setCenter(Point2D.Float center) {
-		this.center = center;
+	@Override
+	public String toString() {
+		return "Particle";
 	}
 }

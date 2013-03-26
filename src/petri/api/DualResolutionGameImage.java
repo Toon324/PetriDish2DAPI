@@ -11,10 +11,21 @@ import javax.imageio.ImageIO;
  * detection, respectively. Creates the outline of an Image for use in collision
  * detection from the Low-Res. Provides High-Res Image for drawing.
  * 
+ * Notes for use: The high resolution image can be of any size. It is
+ * automatically scaled down to the size of the Actor. The low resolution image,
+ * however, should be manually sized down to the size of the Actor using a
+ * third-party program. This will ensure that the Actor uses a pixel-perfect
+ * collision outline while still looking nice.
+ * 
  * @author Cody Swendrowski
  */
-@SuppressWarnings("serial")
+
 public class DualResolutionGameImage extends GameImage {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8990635310168498546L;
+	
 	private BufferedImage image1, image2;
 
 	/**
@@ -55,34 +66,6 @@ public class DualResolutionGameImage extends GameImage {
 		image2 = ImageIO.read(new File(path + high)); // High res used for
 														// drawing
 		generate();
-	}
-
-	/**
-	 * Generates an outline from the Low-res Image by determining pixel color
-	 * and comparing to surrounding pixels to determine an edge.
-	 */
-	private void generate() {
-		int w = image1.getWidth();
-		int h = image1.getHeight();
-
-		for (int x = 0; x < w; x++) {
-			Boolean last = null;
-			for (int y = 0; y < h; y++) {
-				Boolean solid = false; // Transparent
-				int pixel = image1.getRGB(x, y);
-				int alpha = (pixel >> 24) & 0xff;
-				if (alpha != 255) // Color
-				{
-					solid = true;
-				}
-				if (last == null) {
-					last = solid;
-				} else if (last != solid) {
-					outline.addPoint(x, y);
-				}
-				last = solid;
-			}
-		}
 	}
 
 	/**

@@ -5,13 +5,14 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 /**
- * Controls the logic behind the creation of differing Particle explosions.
+ * Controls the logic behind the creation of differing Particle explosions. This
+ * class should be overridden to generate custom explosions.
  * 
  * @author Cody Swendrowski
  */
 public class ParticleEngine {
 
-	private GameEngine engine;
+	protected GameEngine engine;
 
 	/**
 	 * Creates a new ParticleEngine.
@@ -29,7 +30,7 @@ public class ParticleEngine {
 	 * point.
 	 * 
 	 * @param center
-	 *            Center point to spawn around.
+	 *            Center point to spawn around
 	 */
 	public void spawnRandomExplosion(Point2D.Float center) {
 		Random gen = new Random();
@@ -49,6 +50,34 @@ public class ParticleEngine {
 			vector.y = (float) (speed * Math.sin(angleInc * x));
 
 			engine.actors.addParticle(center, vector, c);
+		}
+	}
+
+	/**
+	 * Spawns an explosion of particles, all sharing the given color, speed, and
+	 * decay rate. Particles are spawned in an equal division around the center
+	 * point.
+	 * 
+	 * @param center
+	 *            Center point to spawn around
+	 * @param amount
+	 *            Number of Particles to spawn
+	 * @param speed
+	 *            Speed Particles should move it
+	 * @param color
+	 *            Color Particles should be
+	 */
+	public void spawnColorExplosion(Point2D.Float center, int amount,
+			int speed, Color color) {
+		double angleInc = (2 * Math.PI) / amount; // Angle between particles
+
+		for (int x = 0; x < amount; x++) {
+			// Calculates particle vector speeds
+			Point2D.Float vector = new Point2D.Float();
+			vector.x = (float) (speed * Math.cos(angleInc * x));
+			vector.y = (float) (speed * Math.sin(angleInc * x));
+
+			engine.actors.addParticle(center, vector, color);
 		}
 	}
 }

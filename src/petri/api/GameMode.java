@@ -9,14 +9,15 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 
 /**
- * Abstract class that contains all of the necessary methods for GameModes.
+ * Base class that contains all of the necessary methods for GameModes. This
+ * class should be overridden by the user to enable
  * 
- * @author Cody Swendrowski, Dan Miller
+ * @author Cody Swendrowski
  */
 
 public class GameMode {
 
-	public ArrayList<Button> buttons;
+	protected ArrayList<Button> buttons;
 	public GameEngine engine;
 	protected Image background;
 
@@ -33,6 +34,9 @@ public class GameMode {
 
 	/**
 	 * Runs the logic of the GameMode.
+	 * 
+	 * @param ms
+	 *            The amount of time passed since last call, in Milliseconds
 	 */
 	public void run(int ms) {
 	}
@@ -74,10 +78,21 @@ public class GameMode {
 		return false;
 	}
 
+	/**
+	 * More important than most toString()'s, if a GameMode's toString() is not
+	 * overridden, GameEngine.setCurrentGameMode(String nameOfMode) will not
+	 * work correctly.
+	 */
 	public String toString() {
 		return "GameMode";
 	}
-	
+
+	/**
+	 * Accepts mouse input. Checks click against all buttons in GameMode.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
 	public void clickedAt(MouseEvent e) {
 		try {
 			for (int i = 0; i < buttons.size(); i++) {
@@ -94,21 +109,78 @@ public class GameMode {
 	 * @param e
 	 *            KeyEvent
 	 */
-	public void keyTyped(KeyEvent e) {}
-	
-	public void mouseMoved(MouseEvent e) {}
+	public void keyTyped(KeyEvent e) {
+	}
 
-	public void mouseDragged(MouseEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mouseMoved(MouseEvent e) {
+	}
 
-	public void mouseReleased(MouseEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mouseDragged(MouseEvent e) {
+	}
 
-	public void mousePressed(MouseEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mouseReleased(MouseEvent e) {
+	}
 
-	public void mouseExited(MouseEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mousePressed(MouseEvent e) {
+	}
 
-	public void mouseEntered(MouseEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mouseExited(MouseEvent e) {
+	}
 
-	public void keyReleased(KeyEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void mouseEntered(MouseEvent e) {
+	}
 
-	public void keyPressed(KeyEvent e) {}
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void keyReleased(KeyEvent e) {
+	}
+
+	/**
+	 * Accepts mouse input.
+	 * 
+	 * @param e
+	 *            MouseEvent
+	 */
+	public void keyPressed(KeyEvent e) {
+	}
 }
