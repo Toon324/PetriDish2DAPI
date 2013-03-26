@@ -3,24 +3,39 @@ package petri.api;
 import java.io.DataInputStream;
 import java.io.IOException;
 
-public class ConnectionListener extends Thread {
+/**
+ * Listens for network input on a seperate thread to enable faster run speeds in
+ * the game. Alerts NetworkAdapter that data is available when input is found on
+ * the InputStream.
+ * 
+ * @author Cody Swendrowski
+ */
+public final class ConnectionListener extends Thread {
 
 	private NetworkAdapter adapter;
 	private DataInputStream input;
-	
-	public ConnectionListener(NetworkAdapter adapt, DataInputStream in)
-	{
+
+	/**
+	 * Creates a new ConnectionListener that listens to designated InputStream
+	 * and reports to designated NetworkAdapter.
+	 * 
+	 * @param adapt
+	 *            NetworkAdapter to alert when data is available
+	 * @param in
+	 *            DataInputStream to monitor
+	 */
+	public ConnectionListener(NetworkAdapter adapt, DataInputStream in) {
 		adapter = adapt;
 		input = in;
 	}
-	
-	public void run()
-	{
-		while (true)
-		{
+
+	/**
+	 * Alerts the NetworkAdapter if data is available.
+	 */
+	public void run() {
+		while (true) {
 			try {
-				if (input.available() > 0)
-				{
+				if (input.available() > 0) {
 					adapter.dataAvailable();
 				}
 			} catch (IOException e) {
