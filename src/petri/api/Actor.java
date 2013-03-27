@@ -58,6 +58,10 @@ public abstract class Actor {
 	public Point2D.Float getVelocity() {
 		return vectVel;
 	}
+	
+	public Point2D.Float getSize() {
+		return size;
+	}
 
 	/**
 	 * Draws the Actor.

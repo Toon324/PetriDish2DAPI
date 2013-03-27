@@ -6,7 +6,9 @@ package petri.api.Examples.PongExample;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
+import petri.api.DualResolutionGameImage;
 import petri.api.GameEngine;
 import petri.api.GameMode;
 
@@ -25,6 +27,14 @@ public class LocalGame extends GameMode {
 		super(eng);
 		
 		clearKeyInputs();
+		DualResolutionGameImage ballImage = null;
+		try {
+			ballImage = new DualResolutionGameImage("Examples/PongExample/Resources/", "ball_high.png", "ball_low.png");
+		} catch (IOException e) {
+			GameEngine.log(this.toString() + ": " + e.getMessage());
+		}
+		Ball ball = new Ball(engine, ballImage);
+		ball.setCenter((engine.getEnvironmentSize().x/2) - (ball.getSize().x/2), (engine.getEnvironmentSize().y/2) - (ball.getSize().y/2));
 		
 		left = new Paddle(engine);
 		right = new Paddle(engine);
@@ -32,6 +42,7 @@ public class LocalGame extends GameMode {
 		left.setCenter(10, (engine.getEnvironmentSize().y/2) - 15);
 		right.setCenter(engine.getEnvironmentSize().x - right.getSize().x - 15 , (engine.getEnvironmentSize().y/2) - 15);
 		
+		engine.actors.add(ball);
 		engine.actors.add(left);
 		engine.actors.add(right);
 	}

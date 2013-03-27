@@ -22,7 +22,9 @@ public abstract class ImageActor extends Actor {
 	public ImageActor(GameEngine e, GameImage i) {
 		super(e);
 		image = i;
-		basePoly = i.getOutline();
+		if (image == null)
+			GameEngine.log("Null Image in Actor " + this.toString());
+		basePoly = image.getOutline();
 	}
 
 	@Override
@@ -32,7 +34,11 @@ public abstract class ImageActor extends Actor {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), (int) center.x, (int) center.y, null);
+		g.drawImage(image.getImage(), (int) center.x, (int) center.y,(int) size.x,(int) size.y, null);
+	}
+	
+	public String toString() {
+		return "ImageActor";
 	}
 
 }

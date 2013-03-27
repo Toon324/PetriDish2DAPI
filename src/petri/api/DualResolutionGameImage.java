@@ -25,8 +25,8 @@ public class DualResolutionGameImage extends GameImage {
 	 * 
 	 */
 	private static final long serialVersionUID = 8990635310168498546L;
-	
-	private BufferedImage image1, image2;
+
+	private BufferedImage image2;
 
 	/**
 	 * Creates a new container of a High and Low res Image of name s, and
@@ -40,10 +40,9 @@ public class DualResolutionGameImage extends GameImage {
 	 *             IFF file is not found, throws an IOException
 	 */
 	public DualResolutionGameImage(String high, String low) throws IOException {
-		image1 = ImageIO.read(new File(path + low)); // Low res used for outline
-		image2 = ImageIO.read(new File(path + high)); // High res used for
+		super(low);
+		image2 = ImageIO.read(getClass().getResource(high)); // High res used for
 														// drawing
-		generate();
 	}
 
 	/**
@@ -51,7 +50,7 @@ public class DualResolutionGameImage extends GameImage {
 	 * p, and generates an outline.
 	 * 
 	 * @param p
-	 *            Path to images
+	 *            Path to images, from this class
 	 * @param high
 	 *            Name of high resolution image
 	 * @param low
@@ -61,11 +60,10 @@ public class DualResolutionGameImage extends GameImage {
 	 */
 	public DualResolutionGameImage(String p, String high, String low)
 			throws IOException {
-		path = p;
-		image1 = ImageIO.read(new File(path + low)); // Low res used for outline
-		image2 = ImageIO.read(new File(path + high)); // High res used for
+		super(p,low);
+		
+		image2 = ImageIO.read(getClass().getResource(path + high)); // High res used for
 														// drawing
-		generate();
 	}
 
 	/**

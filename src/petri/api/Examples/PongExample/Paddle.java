@@ -22,6 +22,8 @@ public class Paddle extends PolygonActor {
 		base.addPoint(PADDLE_WIDTH, PADDLE_HEIGHT);
 		base.addPoint(0, PADDLE_HEIGHT);
 		setBasePoly(base);
+		size.x = PADDLE_WIDTH;
+		size.y = PADDLE_HEIGHT;
 		centerLines = true; //Nifty effect
 		drawColor = Color.green;
 		vectVel.y = 3;
@@ -48,10 +50,6 @@ public class Paddle extends PolygonActor {
 	@Override
 	public String toString() {
 		return "Paddle";
-	}
-	
-	public Point getSize() {
-		return new Point(PADDLE_WIDTH, PADDLE_HEIGHT);
 	}
 	
 }

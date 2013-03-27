@@ -45,7 +45,7 @@ public class GameImage extends Component {
 	 */
 	public GameImage(String s) throws IOException {
 		this();
-		image = ImageIO.read(new File(path + s));
+		image = ImageIO.read(getClass().getResource(s));
 		generate();
 	}
 
@@ -53,7 +53,7 @@ public class GameImage extends Component {
 	 * Loads a new Image at path p, and generates an outline.
 	 * 
 	 * @param p
-	 *            Path to Image
+	 *            Path to Image, from this class
 	 * @param s
 	 *            Name of Image
 	 * @throws IOException
@@ -62,7 +62,7 @@ public class GameImage extends Component {
 	public GameImage(String p, String s) throws IOException {
 		this();
 		path = p;
-		image = ImageIO.read(new File(path + s));
+		image = ImageIO.read(getClass().getResource(path + s));
 		generate();
 	}
 
@@ -138,6 +138,8 @@ public class GameImage extends Component {
 	 * @return outline
 	 */
 	public Polygon getOutline() {
+		if (outline == null)
+			GameEngine.log("Null outline in " + this.toString());
 		return outline;
 	}
 
