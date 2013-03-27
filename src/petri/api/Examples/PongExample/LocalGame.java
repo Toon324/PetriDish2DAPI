@@ -49,9 +49,9 @@ public class LocalGame extends GameMode {
 		engine.actors.handleActors(ms);
 		
 		if (w)
-			left.setCenter(left.getCenter().x, left.getCenter().y+left.getVelocity().y);
-		if (s)
 			left.setCenter(left.getCenter().x, left.getCenter().y-left.getVelocity().y);
+		if (s)
+			left.setCenter(left.getCenter().x, left.getCenter().y+left.getVelocity().y);
 		
 		if (up)
 			right.setCenter(right.getCenter().x, right.getCenter().y-right.getVelocity().y);

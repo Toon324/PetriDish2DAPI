@@ -31,6 +31,14 @@ public class Paddle extends PolygonActor {
 	public void move(int ms) {
 		//Do nothing. Only move on Player input.
 	}
+	
+	@Override
+	public void setCenter(float x, float y) {
+		if (y < 0 || y+PADDLE_HEIGHT >= engine.getEnvironmentSize().y)
+			return; //Don't move outside of boundaries
+		else
+			super.setCenter(x, y);
+	}
 
 	@Override
 	public boolean isDead() {
