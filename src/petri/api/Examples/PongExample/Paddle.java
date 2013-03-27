@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.Polygon;
 
+import petri.api.Actor;
 import petri.api.GameEngine;
 import petri.api.PolygonActor;
 
@@ -26,11 +27,12 @@ public class Paddle extends PolygonActor {
 		size.y = PADDLE_HEIGHT;
 		centerLines = true; //Nifty effect
 		drawColor = Color.green;
-		vectVel.y = 3;
+		vectVel.y = 77;
 	}
 	
 	@Override
 	public void move(int ms) {
+		//GameEngine.log("Contains 8, 400? " + basePoly.contains(new Point(8,400)));
 		//Do nothing. Only move on Player input.
 	}
 	
@@ -45,6 +47,11 @@ public class Paddle extends PolygonActor {
 	@Override
 	public boolean isDead() {
 		return false; //Paddles can't die
+	}
+	
+	@Override
+	public void checkCollision(Actor other) {
+		return; //Only Ball will check for collisions
 	}
 
 	@Override

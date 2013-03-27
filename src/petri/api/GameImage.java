@@ -1,6 +1,7 @@
 package petri.api;
 
 import java.awt.Component;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -75,25 +76,49 @@ public class GameImage extends Component {
 		height = image.getHeight();
 
 		for (int x = 0; x < width; x++) {
-			Boolean last = null;
+			Boolean lastPixelWasSolid = null;
 			for (int y = 0; y < height; y++) {
-				Boolean solid = false; // Transparent
+				Boolean thisPixelIsSolid = false;
+
 				int pixel = image.getRGB(x, y);
 				int alpha = (pixel >> 24) & 0xff;
-				if (alpha != 255) // Color
-				{
-					solid = true;
-				}
-				if (last == null) {
-					last = solid;
-				} else if (last != solid) {
+
+				if (alpha == 255) // Color
+					thisPixelIsSolid = true;
+
+				if (lastPixelWasSolid == null)
+					lastPixelWasSolid = thisPixelIsSolid;
+
+				else if (!lastPixelWasSolid && thisPixelIsSolid)
 					outline.addPoint(x, y);
-				}
-				last = solid;
+
+				else if (!thisPixelIsSolid && lastPixelWasSolid)
+					outline.addPoint(x, y - 1);
+
+				lastPixelWasSolid = thisPixelIsSolid;
 			}
 		}
 
+		//outline = traceEdges(outline);
 		outline = removeExtraPoints(outline, 0);
+	}
+
+	private Polygon traceEdges(Polygon p) {
+		Polygon toReturn = new Polygon();
+		
+		Point start = new Point(p.xpoints[0], p.ypoints[0]);
+		
+		
+		return toReturn;
+	}
+	
+	private boolean polyContains(Polygon poly, int x, int y) {
+		for (int i=0; i<poly.npoints; i++)
+			if (x == poly.xpoints[i])
+				if (y == poly.ypoints[i])
+					return true;
+		
+		return false;
 	}
 
 	/**
@@ -104,6 +129,7 @@ public class GameImage extends Component {
 	 * to faster collision checking.
 	 * 
 	 * Written by Dan Miller
+	 * 
 	 * @param poly
 	 *            Polygon to remove extra points from
 	 * @param radianVariance

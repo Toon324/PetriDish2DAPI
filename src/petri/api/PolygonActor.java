@@ -35,7 +35,7 @@ public abstract class PolygonActor extends Actor {
 		drawColor = Color.black;
 		centerLines = false;
 	}
-
+	
 	/**
 	 * Sets the basePoly, which is the default shape of the Actor, to a new
 	 * Polygon.

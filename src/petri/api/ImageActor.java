@@ -1,5 +1,6 @@
 package petri.api;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 /**
@@ -24,7 +25,7 @@ public abstract class ImageActor extends Actor {
 		image = i;
 		if (image == null)
 			GameEngine.log("Null Image in Actor " + this.toString());
-		basePoly = image.getOutline();
+		setBasePoly(image.getOutline());
 	}
 
 	@Override

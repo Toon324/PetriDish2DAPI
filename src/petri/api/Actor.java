@@ -78,7 +78,7 @@ public abstract class Actor {
 	 *            Time since last call in Milliseconds
 	 */
 	public void move(int ms) {
-		setCenter(center.x + (ms / 1000F) * vectVel.x, center.y + (ms / 1000F)
+		setCenter(center.x + (ms / 100F) * vectVel.x, center.y + (ms / 100F)
 				* vectVel.y);
 	}
 
@@ -124,6 +124,17 @@ public abstract class Actor {
 		if (health >= maxHealth)
 			health = maxHealth;
 	}
+	
+	/**
+	 * Sets the basePoly, which is the default shape of the Actor, to a new
+	 * Polygon.
+	 * 
+	 * @param poly
+	 *            Polygon to set to
+	 */
+	public void setBasePoly(Polygon poly) {
+		basePoly = poly;
+	}
 
 	/**
 	 * Checks to see if Actor is colliding with another Actor. This method
@@ -136,20 +147,24 @@ public abstract class Actor {
 	public void checkCollision(Actor a) {
 		if (a.equals(this))
 			return;
+		
+		Polygon otherPoly = a.basePoly;
 		int distance = 1;
-		if (a.basePoly.getBounds().y - basePoly.getBounds().y == 0)
-			return;
-		if (a.basePoly != null && basePoly != null)
-			distance = Math.abs((a.basePoly.getBounds().x - basePoly
-					.getBounds().x)
-					/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
-		if (distance > 5 || a instanceof Particle)
+		
+		if (otherPoly != null && basePoly != null) {
+			
+			//Calculate distance using the formula x^2 + y^2 = z^2
+			int x = otherPoly.getBounds().x - basePoly
+					.getBounds().x;
+			int y = otherPoly.getBounds().y - basePoly.getBounds().y;
+			distance = (int) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+		}
+		if (distance > 150 || a instanceof Particle)
 			return;
 
-		Polygon otherPoly = a.basePoly;
-		for (int i = 0; i < otherPoly.npoints; i++) {
-			if (basePoly.contains(new Point(otherPoly.xpoints[i],
-					otherPoly.ypoints[i]))) {
+		for (int i = 0; i < basePoly.npoints; i++) {
+			if (otherPoly.contains(new Point(basePoly.xpoints[i],
+					basePoly.ypoints[i]))) {
 				collision = true;
 				a.collision = true;
 			}
@@ -165,7 +180,9 @@ public abstract class Actor {
 	 *            Y co-ordinate of center
 	 */
 	public void setCenter(float x, float y) {
+		basePoly.translate((int) -center.x, (int) -center.y);
 		center = new Point2D.Float(x, y);
+		basePoly.translate((int) center.x, (int) center.y);
 	}
 
 	/**
