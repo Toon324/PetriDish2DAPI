@@ -28,7 +28,7 @@ public class Particle extends PolygonActor {
 		super(e);
 		alpha = 255;
 		vectVel = vectorSpeed;
-		drawClr = c;
+		drawColor = c;
 
 		// Size of particle
 		basePoly.addPoint(0, 0);
@@ -41,9 +41,9 @@ public class Particle extends PolygonActor {
 	public void draw(Graphics g) {
 		// Draws a fading tail behind the Particle
 		for (int a = 0; a <= 10; a += 1) {
-			drawClr = new Color(drawClr.getRed(), drawClr.getGreen(),
-					drawClr.getBlue(), alpha / (a + 1));
-			g.setColor(drawClr);
+			drawColor = new Color(drawColor.getRed(), drawColor.getGreen(),
+					drawColor.getBlue(), alpha / (a + 1));
+			g.setColor(drawColor);
 			g.fillRect((int) (center.x - vectVel.x / 6 * a),
 					(int) (center.y - vectVel.y / 6 * a), 4, 4);
 		}

@@ -16,7 +16,7 @@ import java.awt.geom.Point2D;
  */
 public abstract class PolygonActor extends Actor {
 
-	protected Color drawClr;
+	protected Color drawColor;
 	protected Polygon drawPoly;
 	protected boolean centerLines;
 
@@ -32,7 +32,7 @@ public abstract class PolygonActor extends Actor {
 		basePoly = new Polygon();
 		vectVel = new Point2D.Float(0, 0);
 		center = new Point2D.Float(0, 0);
-		drawClr = Color.cyan;
+		drawColor = Color.black;
 		centerLines = false;
 	}
 
@@ -64,7 +64,7 @@ public abstract class PolygonActor extends Actor {
 	 *            Graphics to be drawn with
 	 */
 	public void draw(Graphics g) {
-		g.setColor(drawClr);
+		g.setColor(drawColor);
 		if (drawPoly == null)
 			drawPoly = basePoly;
 
@@ -155,33 +155,6 @@ public abstract class PolygonActor extends Actor {
 	 */
 	public void setCenterLines(boolean cl) {
 		centerLines = cl;
-	}
-
-	/**
-	 * Checks to see if Actor is colliding with another Actor.
-	 * 
-	 * @param a
-	 *            Actor to check collision against
-	 */
-	public void checkCollision(Actor a) {
-		if (a.equals(this))
-			return;
-		int distance = 1;
-		if (a.basePoly != null && basePoly != null)
-			distance = Math.abs((a.basePoly.getBounds().x - basePoly
-					.getBounds().x)
-					/ (a.basePoly.getBounds().y - basePoly.getBounds().y));
-		if (distance > 5 || a instanceof Particle)
-			return;
-
-		Polygon otherPoly = a.basePoly;
-		for (int i = 0; i < otherPoly.npoints; i++) {
-			if (basePoly.contains(new Point(otherPoly.xpoints[i],
-					otherPoly.ypoints[i]))) {
-				setDeath(true);
-				a.setDeath(true);
-			}
-		}
 	}
 
 }
