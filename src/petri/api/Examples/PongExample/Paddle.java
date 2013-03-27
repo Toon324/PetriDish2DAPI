@@ -2,6 +2,7 @@ package petri.api.Examples.PongExample;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.awt.Polygon;
 
 import petri.api.GameEngine;
 import petri.api.PolygonActor;
@@ -15,10 +16,12 @@ public class Paddle extends PolygonActor {
 	private final int PADDLE_HEIGHT = 100, PADDLE_WIDTH = 10;
 	public Paddle(GameEngine e) {
 		super(e);
-		basePoly.addPoint(0, 0);
-		basePoly.addPoint(PADDLE_WIDTH, 0);
-		basePoly.addPoint(PADDLE_WIDTH, PADDLE_HEIGHT);
-		basePoly.addPoint(0, PADDLE_HEIGHT);
+		Polygon base = new Polygon();
+		base.addPoint(0, 0);
+		base.addPoint(PADDLE_WIDTH, 0);
+		base.addPoint(PADDLE_WIDTH, PADDLE_HEIGHT);
+		base.addPoint(0, PADDLE_HEIGHT);
+		setBasePoly(base);
 		centerLines = true; //Nifty effect
 		drawColor = Color.green;
 		vectVel.y = 3;

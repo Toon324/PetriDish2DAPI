@@ -50,8 +50,14 @@ public class LocalGame extends GameMode {
 		
 		if (w)
 			left.setCenter(left.getCenter().x, left.getCenter().y+left.getVelocity().y);
-		else if (s)
+		if (s)
 			left.setCenter(left.getCenter().x, left.getCenter().y-left.getVelocity().y);
+		
+		if (up)
+			right.setCenter(right.getCenter().x, right.getCenter().y-right.getVelocity().y);
+		if (down)
+			right.setCenter(right.getCenter().x, right.getCenter().y+right.getVelocity().y);
+		
 		super.run(ms);
 	}
 
@@ -65,38 +71,34 @@ public class LocalGame extends GameMode {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (e.equals(KeyEvent.VK_W))
+		if (e.getKeyCode() == KeyEvent.VK_W)
 			w = false;
-		else if (e.equals(KeyEvent.VK_S))
+		else if (e.getKeyCode() == KeyEvent.VK_S)
 			s = false;
 		
-		if (e.equals(KeyEvent.VK_UP))
+		if (e.getKeyCode() == KeyEvent.VK_UP)
 			up = false;
-		else if (e.equals(KeyEvent.VK_DOWN))
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
 			down = false;
 		
-		if (e.equals(KeyEvent.VK_ESCAPE))
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			esc = false;
-		
-		super.keyReleased(e);
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if (e.equals(KeyEvent.VK_W))
+		if (e.getKeyCode() == KeyEvent.VK_W)
 			w = true;
-		else if (e.equals(KeyEvent.VK_S))
+		else if (e.getKeyCode() == KeyEvent.VK_S)
 			s = true;
 		
-		if (e.equals(KeyEvent.VK_UP))
+		if (e.getKeyCode() == KeyEvent.VK_UP)
 			up = true;
-		else if (e.equals(KeyEvent.VK_DOWN))
+		else if (e.getKeyCode() == KeyEvent.VK_DOWN)
 			down = true;
 		
-		if (e.equals(KeyEvent.VK_ESCAPE))
+		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			esc = true;
-		
-		super.keyPressed(e);
 	}
 
 	@Override
