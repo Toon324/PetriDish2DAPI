@@ -2,6 +2,7 @@ package petri.api;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Polygon;
 
 /**
  * An Actor that uses an Image when drawing itself.
@@ -25,7 +26,7 @@ public abstract class ImageActor extends Actor {
 		image = i;
 		if (image == null)
 			GameEngine.log("Null Image in Actor " + this.toString());
-		setBasePoly(image.getOutline());
+		setBasePoly(new Polygon(image.getOutline().xpoints,image.getOutline().ypoints, image.getOutline().npoints));
 	}
 
 	@Override

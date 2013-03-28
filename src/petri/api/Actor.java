@@ -152,7 +152,6 @@ public abstract class Actor {
 		int distance = 1;
 		
 		if (otherPoly != null && basePoly != null) {
-			
 			//Calculate distance using the formula x^2 + y^2 = z^2
 			int x = otherPoly.getBounds().x - basePoly
 					.getBounds().x;
@@ -161,7 +160,7 @@ public abstract class Actor {
 		}
 		if (distance > 150 || a instanceof Particle)
 			return;
-
+		
 		for (int i = 0; i < basePoly.npoints; i++) {
 			if (otherPoly.contains(new Point(basePoly.xpoints[i],
 					basePoly.ypoints[i]))) {
