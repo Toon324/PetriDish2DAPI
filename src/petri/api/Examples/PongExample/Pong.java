@@ -19,10 +19,15 @@ public class Pong {
 		MainMenu mainMenu = new MainMenu(engine);
 		LocalGame localGame = new LocalGame(engine);
 		InternetGame internetGame = new InternetGame(engine);
+		InternetLobby internetLobby = new InternetLobby(engine);
+		Host host = new Host(engine);
+		
 
 		engine.addGameMode(mainMenu);
 		engine.addGameMode(localGame);
 		engine.addGameMode(internetGame);
+		engine.addGameMode(internetLobby);
+		engine.addGameMode(host);
 
 		engine.setCurrentGameMode(mainMenu.toString()); // Can also be called as
 													// .setCurrentGameMode("Main Menu")

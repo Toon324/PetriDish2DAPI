@@ -79,12 +79,11 @@ public class GameMode {
 	}
 
 	/**
-	 * More important than most toString()'s, if a GameMode's toString() is not
-	 * overridden, GameEngine.setCurrentGameMode(String nameOfMode) will not
-	 * work correctly.
+	 * Automatically sets the toString() to the class's simple name. Used to
+	 * switch GameModes in GameEngine .setCurrentGameMode(String name).
 	 */
 	public String toString() {
-		return "GameMode";
+		return this.getClass().getSimpleName();
 	}
 
 	/**

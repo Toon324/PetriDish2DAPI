@@ -37,11 +37,6 @@ public class MainMenu extends GameMode {
 
 	}
 
-	@Override
-	public String toString() {
-		return "MainMenu";
-	}
-
 	/* (non-Javadoc)
 	 * @see petri.api.GameMode#run(int)
 	 */
@@ -56,7 +51,7 @@ public class MainMenu extends GameMode {
 		if (buttons.get(0).isClicked())
 			engine.setCurrentGameMode("LocalGame"); //Set to game
 		else if (buttons.get(1).isClicked())
-			engine.setCurrentGameMode("InternetGame");
+			engine.setCurrentGameMode("InternetLobby");
 		else if (buttons.get(2).isClicked())
 			Pong.stopGame(); //Exit
 		

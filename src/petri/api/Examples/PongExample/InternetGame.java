@@ -1,16 +1,15 @@
-/**
- * 
- */
 package petri.api.Examples.PongExample;
+
+import java.awt.event.KeyEvent;
 
 import petri.api.GameEngine;
 import petri.api.GameMode;
 
 /**
- * @author Cody
- *
+ * 
+ * @author Cody Swendrowski
  */
-public class InternetGame extends GameMode {
+public class InternetGame extends LocalGame {
 
 	/**
 	 * @param eng
@@ -18,9 +17,16 @@ public class InternetGame extends GameMode {
 	public InternetGame(GameEngine eng) {
 		super(eng);
 	}
+	
+	@Override
+	public void run(int ms) {
+		// TODO Auto-generated method stub
+		super.run(ms);
+	}
 
 	@Override
-	public String toString() {
-		return "InternetGame";
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		super.keyPressed(e);
 	}
 }
