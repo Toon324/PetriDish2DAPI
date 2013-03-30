@@ -20,11 +20,13 @@ import java.net.Socket;
  * 
  * @author Cody Swendrowski
  */
-public class NetworkAdapter {
+public class NetworkAdapter{
 
 	protected boolean dataAvailable;
 	protected DataInputStream input;
 	protected DataOutputStream output;
+	protected HostThread hostThread;
+	protected int port;
 
 	/**
 	 * Creates a new NetworkAdapter with no data available.
@@ -52,7 +54,8 @@ public class NetworkAdapter {
 	 *             If the connection fails. Usually signifies an incorrect
 	 *             IPAddress and port configuration.
 	 */
-	public void connect(String IPAddress, int port) throws IOException {
+	public void connect(String IPAddress, int portNum) throws IOException {
+		port = portNum;
 		GameEngine.log("Connecting to " + IPAddress + ":" + port);
 		Socket connection = new Socket(IPAddress, port);
 		input = new DataInputStream(connection.getInputStream());
@@ -75,18 +78,15 @@ public class NetworkAdapter {
 	 *             If the connection fails. Usually signifies a taken-port or
 	 *             lack of host rights.
 	 */
-	public void host(int port) throws IOException {
+	public void host(int portNum) throws IOException {
+		port = portNum;
 		ServerSocket socket = new ServerSocket(port);
-		socket.setSoTimeout(100000);
+		socket.setSoTimeout(0); //Wait until cancelled
+		
+		hostThread = new HostThread(this, socket);
+		hostThread.start();
 		GameEngine.log("Hosting from " + InetAddress.getLocalHost() + ":"
 				+ port);
-		socket.setSoTimeout(10);
-		Socket connection = socket.accept();
-		input = new DataInputStream(connection.getInputStream());
-		ConnectionListener cL = new ConnectionListener(this, input);
-		output = new DataOutputStream(connection.getOutputStream());
-		cL.start();
-		GameEngine.log("Successfully connected to client");
 	}
 
 	/**
@@ -121,5 +121,17 @@ public class NetworkAdapter {
 	 */
 	public DataOutputStream getOutputStream() {
 		return output;
+	}
+
+	public void connectionAvailable() {
+		input = hostThread.getInputStream();
+		output = hostThread.getOutputStream();
+		ConnectionListener cL = new ConnectionListener(this, input);
+		cL.start();
+		GameEngine.log("Successfully connected to client");
+	}
+
+	public int getPort() {
+		return port;
 	}
 }
