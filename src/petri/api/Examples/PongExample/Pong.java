@@ -21,6 +21,7 @@ public class Pong {
 		InternetGame internetGame = new InternetGame(engine);
 		InternetLobby internetLobby = new InternetLobby(engine);
 		Host host = new Host(engine);
+		Connect connect = new Connect(engine);
 		
 
 		engine.addGameMode(mainMenu);
@@ -28,6 +29,7 @@ public class Pong {
 		engine.addGameMode(internetGame);
 		engine.addGameMode(internetLobby);
 		engine.addGameMode(host);
+		engine.addGameMode(connect);
 
 		engine.setCurrentGameMode(mainMenu.toString()); // Can also be called as
 													// .setCurrentGameMode("MainMenu")

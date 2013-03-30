@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
+import petri.api.Button;
 import petri.api.GameEngine;
 import petri.api.GameMode;
 
@@ -24,6 +25,20 @@ public class Host extends GameMode {
 	 */
 	public Host(GameEngine eng) {
 		super(eng);
+		Button stop = new Button("Stop Hosting", 350, 400);
+		stop.setColorScheme(Color.green, Color.black, Color.green);
+		
+		buttons.add(stop);
+	}
+	
+	@Override
+	public void run(int ms) {
+		if (buttons.get(0).isClicked())
+			engine.setCurrentGameMode("InternetLobby");
+		else if (engine.networkAdapter.isConnected())
+			engine.setCurrentGameMode("InternetGame");
+		
+		super.run(ms);
 	}
 
 	@Override
@@ -40,6 +55,8 @@ public class Host extends GameMode {
 		} catch (UnknownHostException e) {
 			GameEngine.log(e.getMessage());
 		}
+		
+		super.paint(g);
 	}
 
 	public void startHosting() {
@@ -49,5 +66,9 @@ public class Host extends GameMode {
 			GameEngine.log(e.getMessage());
 		}
 		InternetGame.setOutput(engine.networkAdapter.getOutputStream());
+	}
+	
+	public void stopHosting() {
+		engine.networkAdapter.stopHosting();
 	}
 }

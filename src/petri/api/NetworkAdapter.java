@@ -27,12 +27,14 @@ public class NetworkAdapter{
 	protected DataOutputStream output;
 	protected HostThread hostThread;
 	protected int port;
+	protected boolean connected;
 
 	/**
 	 * Creates a new NetworkAdapter with no data available.
 	 */
 	public NetworkAdapter() {
 		dataAvailable = false;
+		connected = false;
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class NetworkAdapter{
 		ConnectionListener cL = new ConnectionListener(this, input);
 		output = new DataOutputStream(connection.getOutputStream());
 		cL.start();
+		connected = true;
 		GameEngine.log("Successfully connected to host.");
 	}
 
@@ -128,10 +131,19 @@ public class NetworkAdapter{
 		output = hostThread.getOutputStream();
 		ConnectionListener cL = new ConnectionListener(this, input);
 		cL.start();
+		connected = true;
 		GameEngine.log("Successfully connected to client");
 	}
 
 	public int getPort() {
 		return port;
+	}
+
+	public void stopHosting() {
+		hostThread.interrupt();
+	}
+
+	public boolean isConnected() {
+		return connected;
 	}
 }
