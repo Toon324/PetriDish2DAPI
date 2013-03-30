@@ -30,7 +30,7 @@ public class Pong {
 		engine.addGameMode(host);
 
 		engine.setCurrentGameMode(mainMenu.toString()); // Can also be called as
-													// .setCurrentGameMode("Main Menu")
+													// .setCurrentGameMode("MainMenu")
 													// or .setCurrentGameMode(0)
 		
 		gi.startGame();

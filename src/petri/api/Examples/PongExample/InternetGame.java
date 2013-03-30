@@ -10,7 +10,7 @@ import petri.api.GameMode;
  * 
  * @author Cody Swendrowski
  */
-public class InternetGame extends LocalGame {
+public class InternetGame extends GameMode {
 
 	/**
 	 * @param eng

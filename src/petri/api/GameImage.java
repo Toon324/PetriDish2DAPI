@@ -6,6 +6,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
@@ -76,7 +77,7 @@ public class GameImage extends Component {
 		height = image.getHeight();
 
 		for (int x = 0; x < width; x++) {
-			Boolean lastPixelWasSolid = null;
+			Boolean lastPixelWasSolid = false;
 			for (int y = 0; y < height; y++) {
 				Boolean thisPixelIsSolid = false;
 
@@ -86,38 +87,91 @@ public class GameImage extends Component {
 				if (alpha == 255) // Color
 					thisPixelIsSolid = true;
 
-				if (lastPixelWasSolid == null)
-					lastPixelWasSolid = thisPixelIsSolid;
-
-				else if (!lastPixelWasSolid && thisPixelIsSolid)
+				if (!lastPixelWasSolid && thisPixelIsSolid)
 					outline.addPoint(x, y);
 
 				else if (!thisPixelIsSolid && lastPixelWasSolid)
-					outline.addPoint(x, y - 1);
+					if (!pointExists(outline, x, y - 1))
+						outline.addPoint(x, y - 1);
+
+					else if (thisPixelIsSolid) {
+						try {
+							int pixelLeft = image.getRGB(x - 1, y);
+							int alphaLeft = (pixelLeft >> 24) & 0xff;
+
+							if (alphaLeft != 255)
+								outline.addPoint(x, y);
+							
+						} catch (Exception e) {
+							outline.addPoint(x, y);
+							break;
+						}
+						try {
+							int pixelRight = image.getRGB(x + 1, y);
+							int alphaRight = (pixelRight >> 24) & 0xff;
+
+							if (alphaRight != 255)
+								outline.addPoint(x, y);
+							
+						} catch (Exception e) {
+							outline.addPoint(x, y);
+						}
+					}
 
 				lastPixelWasSolid = thisPixelIsSolid;
 			}
 		}
 
-		//outline = traceEdges(outline);
+		outline = traceEdge(outline);
 		outline = removeExtraPoints(outline, 0);
 	}
 
-	private Polygon traceEdges(Polygon p) {
+	private boolean pointExists(Polygon outline, int x, int y) {
+		for (int i = 0; i < outline.npoints; i++) {
+			Point p = new Point(outline.xpoints[i], outline.ypoints[i]);
+			if (p.x == x && p.y == y)
+				return true;
+		}
+		return false;
+	}
+
+	private Polygon traceEdge(Polygon p) {
 		Polygon toReturn = new Polygon();
-		
-		Point start = new Point(p.xpoints[0], p.ypoints[0]);
-		
-		
+		ArrayList<Point> remainingPts = new ArrayList<Point>();
+
+		for (int i = 0; i < p.npoints; i++) {
+			remainingPts.add(new Point(p.xpoints[i], p.ypoints[i]));
+		}
+
+		Point last = remainingPts.get(0);
+		remainingPts.remove(0);
+		toReturn.addPoint(last.x, last.y);
+
+		for (int i = 0; i < remainingPts.size(); i++) {
+			for (int w = 0; w < remainingPts.size(); w++) {
+				Point pt = remainingPts.get(w);
+				int x = last.x - pt.x;
+				int y = last.y - pt.y;
+				int distance = (int) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+				// GameEngine.log("Distance: " + distance);
+				if (distance == 1 || distance == Math.sqrt(2)) {
+					toReturn.addPoint(pt.x, pt.y);
+					GameEngine.log("Point added @ " + pt.x + "," + pt.y);
+					remainingPts.remove(w);
+					last = pt;
+				}
+			}
+		}
+
 		return toReturn;
 	}
-	
+
 	private boolean polyContains(Polygon poly, int x, int y) {
-		for (int i=0; i<poly.npoints; i++)
+		for (int i = 0; i < poly.npoints; i++)
 			if (x == poly.xpoints[i])
 				if (y == poly.ypoints[i])
 					return true;
-		
+
 		return false;
 	}
 

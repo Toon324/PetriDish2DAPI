@@ -1,5 +1,6 @@
 package petri.api.Examples.PongExample;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -18,12 +19,6 @@ public class Host extends GameMode {
 	 */
 	public Host(GameEngine eng) {
 		super(eng);
-		try {
-			eng.networkAdapter.host(42);
-		} catch (IOException e) {
-			GameEngine.log(e.getMessage());
-		}
-		InternetGame.setOutput(eng.networkAdapter.getOutputStream());
 	}
 
 	
@@ -32,5 +27,14 @@ public class Host extends GameMode {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, engine.getEnvironmentSize().x, engine.getEnvironmentSize().y);
 		g.drawString("Currently hosting from ", 0, 0);
+	}
+	
+	public void startHosting() {
+		try {
+			engine.networkAdapter.host(42);
+		} catch (IOException e) {
+			GameEngine.log(e.getMessage());
+		}
+		InternetGame.setOutput(engine.networkAdapter.getOutputStream());
 	}
 }

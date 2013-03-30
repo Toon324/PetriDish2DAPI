@@ -8,7 +8,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Provides convience methods for connecting to a specified IP address and port,
+ * Provides convenience method for connecting to a specified IP address and port,
  * or hosting on the IP on a given port.
  * 
  * Provides access to input and output stream for receiving and sending data
