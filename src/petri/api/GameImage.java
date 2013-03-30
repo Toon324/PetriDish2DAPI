@@ -153,10 +153,9 @@ public class GameImage extends Component {
 				int x = last.x - pt.x;
 				int y = last.y - pt.y;
 				int distance = (int) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-				// GameEngine.log("Distance: " + distance);
+				
 				if (distance == 1 || distance == Math.sqrt(2)) {
 					toReturn.addPoint(pt.x, pt.y);
-					GameEngine.log("Point added @ " + pt.x + "," + pt.y);
 					remainingPts.remove(w);
 					last = pt;
 				}

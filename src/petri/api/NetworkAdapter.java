@@ -80,6 +80,7 @@ public class NetworkAdapter {
 		socket.setSoTimeout(100000);
 		GameEngine.log("Hosting from " + InetAddress.getLocalHost() + ":"
 				+ port);
+		socket.setSoTimeout(10);
 		Socket connection = socket.accept();
 		input = new DataInputStream(connection.getInputStream());
 		ConnectionListener cL = new ConnectionListener(this, input);

@@ -1,6 +1,7 @@
 package petri.api.Examples.PongExample;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 import petri.api.Button;
@@ -12,7 +13,8 @@ import petri.api.GameMode;
  * @author Cody Swendrowski
  */
 public class InternetLobby extends GameMode {
-
+	private final Font terminal = new Font("Monospaced", Font.PLAIN, 50);
+	
 	/**
 	 * @param eng
 	 */
@@ -33,8 +35,10 @@ public class InternetLobby extends GameMode {
 	
 	@Override
 	public void run(int ms) {
-		if (buttons.get(0).isClicked())
+		if (buttons.get(0).isClicked()) {
 			engine.setCurrentGameMode("Host");
+			((Host)engine.getCurrentGameMode()).startHosting();
+		}
 		else if (buttons.get(1).isClicked())
 			engine.setCurrentGameMode("Connect");
 		else if (buttons.get(2).isClicked())
@@ -51,6 +55,10 @@ public class InternetLobby extends GameMode {
 		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, engine.getEnvironmentSize().x, engine.getEnvironmentSize().y);
+		
+		g.setColor(Color.green);
+		g.setFont(terminal);
+		engine.centerTextHorizontally(g, "Internet Lobby", 0, engine.getEnvironmentSize().x, 50);
 		super.paint(g);
 	}
 }
