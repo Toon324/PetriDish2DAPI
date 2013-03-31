@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Float;
 
 /**
  * The base class for all things that both move and paint. Offers variables for

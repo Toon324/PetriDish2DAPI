@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Handles all the game logic and painting based on the current game mode.
@@ -293,5 +294,24 @@ public class GameEngine {
 	 */
 	public Point getEnvironmentSize() {
 		return environmentSize;
+	}
+
+	/**
+	 * @param name
+	 * @return
+	 */
+	public GameMode getGameMode(String name) {
+		for (GameMode mode : gameModes)
+			if (mode.toString().equals(name))
+				return mode;
+		return null;
+	}
+
+	/**
+	 * @return
+	 */
+	public long getCurrentUTCTime() {
+		Date date = new Date();
+		return date.getTime();
 	}
 }

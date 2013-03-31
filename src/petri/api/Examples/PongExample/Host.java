@@ -3,7 +3,6 @@ package petri.api.Examples.PongExample;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -65,10 +64,6 @@ public class Host extends GameMode {
 		} catch (IOException e) {
 			GameEngine.log(e.getMessage());
 		}
-		InternetGame.setOutput(engine.networkAdapter.getOutputStream());
-	}
-	
-	public void stopHosting() {
-		engine.networkAdapter.stopHosting();
+		((InternetGame)engine.getGameMode("InternetGame")).setOutput(engine.networkAdapter.getOutputStream());
 	}
 }

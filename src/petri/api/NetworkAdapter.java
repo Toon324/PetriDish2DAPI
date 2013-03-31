@@ -28,6 +28,7 @@ public class NetworkAdapter{
 	protected HostThread hostThread;
 	protected int port;
 	protected boolean connected;
+	protected Socket connection;
 
 	/**
 	 * Creates a new NetworkAdapter with no data available.
@@ -59,7 +60,7 @@ public class NetworkAdapter{
 	public void connect(String IPAddress, int portNum) throws IOException {
 		port = portNum;
 		GameEngine.log("Connecting to " + IPAddress + ":" + port);
-		Socket connection = new Socket(IPAddress, port);
+		connection = new Socket(IPAddress, port);
 		input = new DataInputStream(connection.getInputStream());
 		ConnectionListener cL = new ConnectionListener(this, input);
 		output = new DataOutputStream(connection.getOutputStream());
@@ -137,6 +138,10 @@ public class NetworkAdapter{
 
 	public int getPort() {
 		return port;
+	}
+	
+	public void closeConnection() throws IOException {
+		connection.close();
 	}
 
 	public void stopHosting() {
