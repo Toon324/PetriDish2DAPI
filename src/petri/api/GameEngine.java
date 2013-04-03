@@ -36,6 +36,7 @@ public class GameEngine {
 	public NetworkAdapter networkAdapter;
 
 	protected int score;
+	protected static String path = "";
 
 	private Point environmentSize = new Point(0, 0);
 	public static PrintWriter debugWriter;
@@ -46,14 +47,14 @@ public class GameEngine {
 	protected double FPS;
 
 	static {
-		File file = new File("bin/petri/api/resources/debug.txt");
+		File file = new File(path + "debug.txt");
 		try {
 			if (!file.exists())
 				file.createNewFile();
 			debugWriter = new PrintWriter(
 					new FileWriter(file.getAbsoluteFile()));
 		} catch (IOException e) {
-			System.out.println("Error creating debug output stream\n"
+			System.out.println("Error creating debug debug output stream\n"
 					+ System.getProperty("user.dir"));
 			e.printStackTrace();
 		}
@@ -308,6 +309,14 @@ public class GameEngine {
 			if (mode.toString().equals(name))
 				return mode;
 		return null;
+	}
+	
+	/**
+	 * Sets the path used by the debug writer.
+	 * @param dpath
+	 */
+	public static void setDebugPath(String dpath) {
+		path = dpath;
 	}
 
 	/**

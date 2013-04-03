@@ -119,7 +119,19 @@ public class InternetGame extends GameMode {
 				GameEngine.log(e.getMessage());
 			}
 		}
+		
+		pollNetwork();
+		
 		super.run(ms);
+	}
+
+	/**
+	 * 
+	 */
+	private void pollNetwork() {
+		while (engine.networkAdapter.isDataAvailable()) {
+			
+		}	
 	}
 
 	@Override

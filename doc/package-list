@@ -1,1 +1,3 @@
 petri.api
+petri.api.Examples.BasicExample
+petri.api.Examples.PongExample
