@@ -7,6 +7,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
+ * A seperate thread that listens for a connection without blocking the rest of
+ * the game.
  * 
  * @author Cody Swendrowski
  */
@@ -18,8 +20,12 @@ public final class HostThread extends Thread {
 	private ServerSocket socket;
 
 	/**
-	 * @param socket
+	 * Creates a new HostThread.
 	 * 
+	 * @param net
+	 *            NetworkAdapter to alert when connection is made
+	 * @param socket
+	 *            ServerSocket to listen on
 	 */
 	public HostThread(NetworkAdapter net, ServerSocket sock) {
 		adapter = net;
@@ -38,10 +44,20 @@ public final class HostThread extends Thread {
 		}
 	}
 
+	/**
+	 * Returns the InputStream.
+	 * 
+	 * @return input
+	 */
 	public DataInputStream getInputStream() {
 		return input;
 	}
-	
+
+	/**
+	 * Returns the OutputStream.
+	 * 
+	 * @return output
+	 */
 	public DataOutputStream getOutputStream() {
 		return output;
 	}

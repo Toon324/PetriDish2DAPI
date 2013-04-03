@@ -57,7 +57,12 @@ public abstract class Actor {
 	public Point2D.Float getVelocity() {
 		return vectVel;
 	}
-	
+
+	/**
+	 * Returns the size of the Actor in Point2D.Float format.
+	 * 
+	 * @return size
+	 */
 	public Point2D.Float getSize() {
 		return size;
 	}
@@ -123,7 +128,7 @@ public abstract class Actor {
 		if (health >= maxHealth)
 			health = maxHealth;
 	}
-	
+
 	/**
 	 * Sets the basePoly, which is the default shape of the Actor, to a new
 	 * Polygon.
@@ -146,20 +151,19 @@ public abstract class Actor {
 	public void checkCollision(Actor a) {
 		if (a.equals(this))
 			return;
-		
+
 		Polygon otherPoly = a.basePoly;
 		int distance = 1;
-		
+
 		if (otherPoly != null && basePoly != null) {
-			//Calculate distance using the formula x^2 + y^2 = z^2
-			int x = otherPoly.getBounds().x - basePoly
-					.getBounds().x;
+			// Calculate distance using the formula x^2 + y^2 = z^2
+			int x = otherPoly.getBounds().x - basePoly.getBounds().x;
 			int y = otherPoly.getBounds().y - basePoly.getBounds().y;
 			distance = (int) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
 		}
 		if (distance > 150 || a instanceof Particle)
 			return;
-		
+
 		for (int i = 0; i < basePoly.npoints; i++) {
 			if (otherPoly.contains(new Point(basePoly.xpoints[i],
 					basePoly.ypoints[i]))) {

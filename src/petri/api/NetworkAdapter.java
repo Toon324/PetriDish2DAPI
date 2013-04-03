@@ -8,8 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Provides convenience method for connecting to a specified IP address and port,
- * or hosting on the IP on a given port.
+ * Provides convenience method for connecting to a specified IP address and
+ * port, or hosting on the IP on a given port.
  * 
  * Provides access to input and output stream for receiving and sending data
  * over the network.
@@ -20,7 +20,7 @@ import java.net.Socket;
  * 
  * @author Cody Swendrowski
  */
-public class NetworkAdapter{
+public class NetworkAdapter {
 
 	protected boolean dataAvailable;
 	protected DataInputStream input;
@@ -85,8 +85,8 @@ public class NetworkAdapter{
 	public void host(int portNum) throws IOException {
 		port = portNum;
 		ServerSocket socket = new ServerSocket(port);
-		socket.setSoTimeout(0); //Wait until cancelled
-		
+		socket.setSoTimeout(0); // Wait until cancelled
+
 		hostThread = new HostThread(this, socket);
 		hostThread.start();
 		GameEngine.log("Hosting from " + InetAddress.getLocalHost() + ":"
@@ -113,6 +113,7 @@ public class NetworkAdapter{
 
 	/**
 	 * Returns the InputStream. Used to read data sent over the network.
+	 * 
 	 * @return input
 	 */
 	public DataInputStream getInputStream() {
@@ -121,6 +122,7 @@ public class NetworkAdapter{
 
 	/**
 	 * Returns the OutputStream. Used to send data over the network.
+	 * 
 	 * @return output
 	 */
 	public DataOutputStream getOutputStream() {
@@ -136,18 +138,36 @@ public class NetworkAdapter{
 		GameEngine.log("Successfully connected to client");
 	}
 
+	/**
+	 * Returns the port being used by the Adapter.
+	 * 
+	 * @return port
+	 */
 	public int getPort() {
 		return port;
 	}
-	
+
+	/**
+	 * Closes the connection.
+	 * 
+	 * @throws IOException
+	 */
 	public void closeConnection() throws IOException {
 		connection.close();
 	}
 
+	/**
+	 * Stops listening for a connection.
+	 */
 	public void stopHosting() {
 		hostThread.interrupt();
 	}
 
+	/**
+	 * Returns true if connected to another computer.
+	 * 
+	 * @return True if connected
+	 */
 	public boolean isConnected() {
 		return connected;
 	}

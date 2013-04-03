@@ -38,6 +38,7 @@ public abstract class ImageActor extends Actor {
 		g.drawImage(image.getImage(), (int) center.x, (int) center.y,(int) size.x,(int) size.y, null);
 	}
 	
+	@Override
 	public String toString() {
 		return "ImageActor";
 	}

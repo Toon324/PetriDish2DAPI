@@ -297,8 +297,11 @@ public class GameEngine {
 	}
 
 	/**
+	 * Gets a GameMode based on it's name.
+	 * 
 	 * @param name
-	 * @return
+	 *            Name of GameMode
+	 * @return GameMode
 	 */
 	public GameMode getGameMode(String name) {
 		for (GameMode mode : gameModes)
@@ -308,7 +311,9 @@ public class GameEngine {
 	}
 
 	/**
-	 * @return
+	 * Gets the current UTC time of the System.
+	 * 
+	 * @return date.getTime()
 	 */
 	public long getCurrentUTCTime() {
 		Date date = new Date();

@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -101,7 +100,7 @@ public class GameImage extends Component {
 
 							if (alphaLeft != 255)
 								outline.addPoint(x, y);
-							
+
 						} catch (Exception e) {
 							outline.addPoint(x, y);
 							break;
@@ -112,7 +111,7 @@ public class GameImage extends Component {
 
 							if (alphaRight != 255)
 								outline.addPoint(x, y);
-							
+
 						} catch (Exception e) {
 							outline.addPoint(x, y);
 						}
@@ -126,6 +125,17 @@ public class GameImage extends Component {
 		outline = removeExtraPoints(outline, 0);
 	}
 
+	/**
+	 * Helper method. Determines if a point exists in a given Polygon.
+	 * 
+	 * @param outline
+	 *            Polygon to check
+	 * @param x
+	 *            X Coordinate of point
+	 * @param y
+	 *            Y Coordinate of point
+	 * @return true if point exists; false if not.
+	 */
 	private boolean pointExists(Polygon outline, int x, int y) {
 		for (int i = 0; i < outline.npoints; i++) {
 			Point p = new Point(outline.xpoints[i], outline.ypoints[i]);
@@ -135,6 +145,14 @@ public class GameImage extends Component {
 		return false;
 	}
 
+	/**
+	 * Helper method. Traces the edge of the given Polygon of random points,
+	 * determining how they should be properly connected based on distance.
+	 * 
+	 * @param p
+	 *            Polyon to reorganize
+	 * @return Organized Polygon
+	 */
 	private Polygon traceEdge(Polygon p) {
 		Polygon toReturn = new Polygon();
 		ArrayList<Point> remainingPts = new ArrayList<Point>();
@@ -153,7 +171,7 @@ public class GameImage extends Component {
 				int x = last.x - pt.x;
 				int y = last.y - pt.y;
 				int distance = (int) Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
-				
+
 				if (distance == 1 || distance == Math.sqrt(2)) {
 					toReturn.addPoint(pt.x, pt.y);
 					remainingPts.remove(w);
@@ -163,15 +181,6 @@ public class GameImage extends Component {
 		}
 
 		return toReturn;
-	}
-
-	private boolean polyContains(Polygon poly, int x, int y) {
-		for (int i = 0; i < poly.npoints; i++)
-			if (x == poly.xpoints[i])
-				if (y == poly.ypoints[i])
-					return true;
-
-		return false;
 	}
 
 	/**
