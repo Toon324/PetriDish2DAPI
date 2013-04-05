@@ -31,7 +31,8 @@ public class GameMode {
 	}
 
 	/**
-	 * Runs the logic of the GameMode.
+	 * Runs the logic of the GameMode. By default, this does nothing. Call
+	 * engine.actors.handleActors(ms) to make Actors move.
 	 * 
 	 * @param ms
 	 *            The amount of time passed since last call, in Milliseconds
@@ -40,7 +41,8 @@ public class GameMode {
 	}
 
 	/**
-	 * Paints the necessary components in GameMode.
+	 * Paints the necessary components in GameMode. Call
+	 * engine.actors.drawActors(g) to draw Actors.
 	 * 
 	 * @param g
 	 *            Graphics to paint with

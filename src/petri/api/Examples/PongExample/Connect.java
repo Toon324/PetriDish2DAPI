@@ -40,11 +40,11 @@ public final class Connect extends GameMode {
 			engine.setCurrentGameMode("InternetLobby");
 		else if (buttons.get(1).isClicked()) {
 			try {
-				engine.networkAdapter.connect(connectIP.toString(), 42);
+				if (engine.networkAdapter.connect(connectIP.toString(), 42))
+					engine.setCurrentGameMode("InternetGame");
 			} catch (IOException e) {
 				GameEngine.log(e.getMessage());
 			}
-			engine.setCurrentGameMode("InternetGame");
 		}
 			
 		super.run(ms);

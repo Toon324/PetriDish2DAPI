@@ -75,25 +75,26 @@ public class InternetGame extends GameMode {
 			else
 				right.setCenter(right.getCenter().x, right.getCenter().y
 						- (right.getVelocity().y * (ms / 100f)));
+			
 			try {
-				output.writeInt(0); //0 == paddle movement
-				
+				output.writeInt(0); // 0 == paddle movement
+
 				if (isHost)
-					output.writeInt(0); //00 == paddleLeft movement
+					output.writeInt(0); // 00 == paddleLeft movement
 				else
-					output.writeInt(1); //01 == paddleRight movement
-				
-				output.writeInt(0); //0X0 == up
-				
-				output.writeInt(ms); //Time for this call
-				output.writeLong(engine.getCurrentUTCTime()); //When it was sent
+					output.writeInt(1); // 01 == paddleRight movement
+
+				output.writeInt(0); // 0X0 == up
+
+				output.writeInt(ms); // Time for this call
+				output.writeLong(engine.getCurrentUTCTime()); // When it was
+																// sent
 				output.flush();
-				
+
 			} catch (IOException e) {
 				GameEngine.log(e.getMessage());
 			}
-		}
-		else if (down) {
+		} else if (down) {
 			if (isHost)
 				left.setCenter(left.getCenter().x,
 						left.getCenter().y
@@ -101,27 +102,29 @@ public class InternetGame extends GameMode {
 			else
 				right.setCenter(right.getCenter().x, right.getCenter().y
 						- (right.getVelocity().y * (ms / 100f)));
+			
 			try {
-				output.writeInt(0); //0 == paddle movement
-				
+				output.writeInt(0); // 0 == paddle movement
+
 				if (isHost)
-					output.writeInt(0); //00 == paddleLeft movement
+					output.writeInt(0); // 00 == paddleLeft movement
 				else
-					output.writeInt(1); //01 == paddleRight movement
-				
-				output.writeInt(1); //0X1 == down
-				
-				output.writeInt(ms); //Time for this call
-				output.writeLong(engine.getCurrentUTCTime()); //When it was sent
+					output.writeInt(1); // 01 == paddleRight movement
+
+				output.writeInt(1); // 0X1 == down
+
+				output.writeInt(ms); // Time for this call
+				output.writeLong(engine.getCurrentUTCTime()); // When it was
+																// sent
 				output.flush();
-				
+
 			} catch (IOException e) {
 				GameEngine.log(e.getMessage());
 			}
 		}
-		
+
 		pollNetwork();
-		
+
 		super.run(ms);
 	}
 
@@ -130,8 +133,43 @@ public class InternetGame extends GameMode {
 	 */
 	private void pollNetwork() {
 		while (engine.networkAdapter.isDataAvailable()) {
-			
-		}	
+			try {
+				if (input.readInt() == 0) {
+					int side = input.readInt();
+					int dir = input.readInt();
+					int ms = input.readInt();
+					int time = (int) ((engine.getCurrentUTCTime() - input
+							.readInt()) + ms); // Paddle will move backwards if
+												// message was sent from the
+												// future. It happens you know.
+					if (side == 0)
+						if (dir == 0)
+							left.setCenter(
+									left.getCenter().x,
+									left.getCenter().y
+											- (left.getVelocity().y * (time / 100f)));
+						else if (dir == 1)
+							left.setCenter(
+									left.getCenter().x,
+									left.getCenter().y
+											+ (left.getVelocity().y * (time / 100f)));
+
+						else if (side == 1)
+							if (dir == 0)
+								right.setCenter(
+										right.getCenter().x,
+										right.getCenter().y
+												- (right.getVelocity().y * (time / 100f)));
+							else if (dir == 1)
+								right.setCenter(
+										right.getCenter().x,
+										right.getCenter().y
+												+ (right.getVelocity().y * (time / 100f)));
+				}
+			} catch (IOException e) {
+				GameEngine.log(e.toString());
+			}
+		}
 	}
 
 	@Override

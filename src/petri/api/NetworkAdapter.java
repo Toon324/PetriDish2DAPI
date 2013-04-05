@@ -53,11 +53,12 @@ public class NetworkAdapter {
 	 *            The IP Address to connect to
 	 * @param port
 	 *            The port on the IP Address to connect to
+	 * @return 
 	 * @throws IOException
 	 *             If the connection fails. Usually signifies an incorrect
 	 *             IPAddress and port configuration.
 	 */
-	public void connect(String IPAddress, int portNum) throws IOException {
+	public boolean connect(String IPAddress, int portNum) throws IOException {
 		port = portNum;
 		GameEngine.log("Connecting to " + IPAddress + ":" + port);
 		connection = new Socket(IPAddress, port);
@@ -67,6 +68,7 @@ public class NetworkAdapter {
 		cL.start();
 		connected = true;
 		GameEngine.log("Successfully connected to host.");
+		return true;
 	}
 
 	/**

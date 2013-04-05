@@ -63,6 +63,7 @@ public abstract class PolygonActor extends Actor {
 	 * @param g
 	 *            Graphics to be drawn with
 	 */
+	@Override
 	public void draw(Graphics g) {
 		g.setColor(drawColor);
 		if (drawPoly == null)
