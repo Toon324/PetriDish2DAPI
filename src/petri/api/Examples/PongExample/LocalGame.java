@@ -21,7 +21,6 @@ public class LocalGame extends GameMode {
 
 	private boolean w, s, up, down;
 	private Paddle left, right;
-	private int leftScore, rightScore;
 	private Font scoreFont = new Font("Monospaced", Font.PLAIN, 30);
 	private DualResolutionGameImage ballImage = null;
 	private Ball ball;
@@ -55,9 +54,6 @@ public class LocalGame extends GameMode {
 		engine.actors.add(ball);
 		engine.actors.add(left);
 		engine.actors.add(right);
-
-		leftScore = 0;
-		rightScore = 0;
 	}
 
 	private void clearKeyInputs() {
@@ -109,7 +105,7 @@ public class LocalGame extends GameMode {
 		g.setColor(Color.green);
 		g.setFont(scoreFont);
 		engine.centerTextHorizontally(g,
-				leftScore + "     :     " + rightScore, 0,
+				engine.getScore(0) + "     :     " + engine.getScore(1), 0,
 				engine.getEnvironmentSize().x, 30);
 		super.paint(g);
 	}
@@ -141,13 +137,6 @@ public class LocalGame extends GameMode {
 
 		if (e.getKeyCode() == KeyEvent.VK_ESCAPE)
 			engine.setCurrentGameMode("MainMenu");
-	}
-
-	public void scorePoint(String side) {
-		if (side.equalsIgnoreCase("left"))
-			leftScore++;
-		else if (side.equalsIgnoreCase("right"))
-			rightScore++;
 	}
 
 }

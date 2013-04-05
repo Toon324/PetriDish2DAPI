@@ -35,9 +35,8 @@ public final class ConnectionListener extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				if (input.available() > 0) {
+				if (input.available() > 0)
 					adapter.dataAvailable();
-				}
 			} catch (IOException e) {
 				GameEngine.log(e.toString());
 			}

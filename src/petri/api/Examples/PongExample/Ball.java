@@ -55,13 +55,11 @@ public class Ball extends ImageActor {
 		}
 		else if (center.x + size.x < 0) {
 			setDeath(true);
-			LocalGame lg = (LocalGame) engine.getCurrentGameMode();
-			lg.scorePoint("left");
+			engine.setScore(0, engine.getScore(0)+1);
 		}
 		else if (center.x > engine.getEnvironmentSize().x) {
 			setDeath(true);
-			LocalGame lg = (LocalGame) engine.getCurrentGameMode();
-			lg.scorePoint("right");
+			engine.setScore(1, engine.getScore(1)+1);
 		}
 		else
 			super.setCenter(x, y);

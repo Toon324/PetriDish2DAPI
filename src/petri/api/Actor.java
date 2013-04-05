@@ -196,6 +196,15 @@ public abstract class Actor {
 	public void setDeath(boolean d) {
 		death = d;
 	}
+	
+	/**
+	 * @param velX
+	 * @param velY
+	 */
+	public void setVelocity(float velX, float velY) {
+		vectVel.x = velX;
+		vectVel.y = velY;
+	}
 
 	/**
 	 * Returns true IFF checkCollision has detected a collision.

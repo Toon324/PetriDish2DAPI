@@ -34,8 +34,10 @@ public class Host extends GameMode {
 	public void run(int ms) {
 		if (buttons.get(0).isClicked())
 			engine.setCurrentGameMode("InternetLobby");
-		else if (engine.networkAdapter.isConnected())
+		else if (engine.networkAdapter.isConnected()) {
 			engine.setCurrentGameMode("InternetGame");
+			((InternetGame) engine.getCurrentGameMode()).setHost(true);
+		}
 		
 		super.run(ms);
 	}
@@ -64,6 +66,5 @@ public class Host extends GameMode {
 		} catch (IOException e) {
 			GameEngine.log(e.getMessage());
 		}
-		((InternetGame)engine.getGameMode("InternetGame")).setOutput(engine.networkAdapter.getOutputStream());
 	}
 }

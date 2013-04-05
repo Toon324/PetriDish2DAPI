@@ -35,7 +35,7 @@ public class GameEngine {
 	public SoundPlayer soundPlayer;
 	public NetworkAdapter networkAdapter;
 
-	protected int score;
+	protected ArrayList<Integer> scores = new ArrayList<Integer>();
 	protected static String path = "";
 
 	private Point environmentSize = new Point(0, 0);
@@ -83,8 +83,6 @@ public class GameEngine {
 
 		stepTimes = new ArrayList<Long>();
 		stepTimes.add(millis);
-
-		score = 0;
 	}
 
 	/**
@@ -217,11 +215,15 @@ public class GameEngine {
 
 	/**
 	 * Returns the current score for the engine.
+	 * @param i 
 	 * 
 	 * @return score
 	 */
-	public int getScore() {
-		return score;
+	public int getScore(int i) {
+		while (scores.size() <= i)
+			scores.add(new Integer(0));
+		
+		return scores.get(i).intValue();
 	}
 
 	/**
@@ -230,8 +232,11 @@ public class GameEngine {
 	 * @param newScore
 	 *            New score to set
 	 */
-	public void setScore(int newScore) {
-		score = newScore;
+	public void setScore(int scoreIndex, int newScore) {
+		while (scores.size() <= scoreIndex)
+			scores.add(new Integer(0));
+		
+		scores.set(scoreIndex, Integer.valueOf(newScore));
 	}
 
 	/**
