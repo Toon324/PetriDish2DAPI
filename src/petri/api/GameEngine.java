@@ -23,17 +23,18 @@ public class GameEngine {
 
 	// Resources to use
 	public final Font large = new Font("Serif", Font.BOLD, 30);
+	public final Font medium = new Font("Serif", Font.PLAIN, 20);
 	public final Font small = new Font("Serif", Font.PLAIN, 12);
-
+	
 	private GameMode currentMode;
 	private long millis; // Used to calculate time between each frame
 
 	// GameModes
 	protected ArrayList<GameMode> gameModes = new ArrayList<GameMode>();
 
-	public ParticleEngine particleEngine;
-	public SoundPlayer soundPlayer;
-	public NetworkAdapter networkAdapter;
+	private ParticleEngine particleEngine;
+	private SoundPlayer soundPlayer;
+	private NetworkAdapter networkAdapter;
 
 	protected ArrayList<Integer> scores = new ArrayList<Integer>();
 	protected static String path = "";
@@ -43,8 +44,113 @@ public class GameEngine {
 	private static boolean debugMode;
 
 	protected ArrayList<Long> stepTimes;
-	public Actors actors;
+	private Actors actors;
 	protected double FPS;
+
+	/**
+	 * @return the currentMode
+	 */
+	public GameMode getCurrentMode() {
+		return currentMode;
+	}
+
+	/**
+	 * @param currentMode the currentMode to set
+	 */
+	public void setCurrentMode(GameMode currentMode) {
+		this.currentMode = currentMode;
+	}
+
+	/**
+	 * @return the particleEngine
+	 */
+	public ParticleEngine getParticleEngine() {
+		return particleEngine;
+	}
+
+	/**
+	 * @param particleEngine the particleEngine to set
+	 */
+	public void setParticleEngine(ParticleEngine particleEngine) {
+		this.particleEngine = particleEngine;
+	}
+
+	/**
+	 * @return the soundPlayer
+	 */
+	public SoundPlayer getSoundPlayer() {
+		return soundPlayer;
+	}
+
+	/**
+	 * @param soundPlayer the soundPlayer to set
+	 */
+	public void setSoundPlayer(SoundPlayer soundPlayer) {
+		this.soundPlayer = soundPlayer;
+	}
+
+	/**
+	 * @return the networkAdapter
+	 */
+	public NetworkAdapter getNetworkAdapter() {
+		return networkAdapter;
+	}
+
+	/**
+	 * @param networkAdapter the networkAdapter to set
+	 */
+	public void setNetworkAdapter(NetworkAdapter networkAdapter) {
+		this.networkAdapter = networkAdapter;
+	}
+
+	/**
+	 * @return the scores
+	 */
+	public ArrayList<Integer> getScores() {
+		return scores;
+	}
+
+	/**
+	 * @param scores the scores to set
+	 */
+	public void setScores(ArrayList<Integer> scores) {
+		this.scores = scores;
+	}
+
+	/**
+	 * @return the actors
+	 */
+	public Actors getActors() {
+		return actors;
+	}
+
+	/**
+	 * @param actors the actors to set
+	 */
+	public void setActors(Actors actors) {
+		this.actors = actors;
+	}
+
+	/**
+	 * @return the fPS
+	 */
+	public double getFPS() {
+		return FPS;
+	}
+
+	/**
+	 * @param gameModes the gameModes to set
+	 */
+	public void setGameModes(ArrayList<GameMode> gameModes) {
+		this.gameModes = gameModes;
+	}
+
+	/**
+	 * @param environmentSize the environmentSize to set
+	 */
+	public void setEnvironmentSize(Point environmentSize) {
+		this.environmentSize = environmentSize;
+	}
 
 	static {
 		File file = new File(path + "debug.txt");

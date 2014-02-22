@@ -107,7 +107,7 @@ public final class GameApplet extends Applet implements Runnable, MouseListener,
 				try {
 					wait(); // wait for applet to draw
 				} catch (Exception ex) {
-					GameEngine.log(ex.toString());
+					GameEngine.log("GameApplet error: " + ex.getMessage());
 				}
 			}
 		}

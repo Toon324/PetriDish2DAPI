@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -12,11 +13,13 @@ import javax.imageio.ImageIO;
 /**
  * The base class for all Images used in the game. Generates a pixel-perfect
  * outline of the Image by determining boundaries as a change between an alpha
- * (transparant) pixel and a non-alpha (color) pixel. As such, this method is
+ * (transparent) pixel and a non-alpha (color) pixel. As such, this method is
  * only accurate in determining the actual image contained in a .png. User must
  * override to support other edge-detection methods if they want pixel-perfect
  * collisions for other image formats, or .pngs with non-transparent
  * backgrounds.
+ * 
+ * Images are read in relation to the base folder of the program.
  * 
  * @author Cody Swendrowski
  */
@@ -41,12 +44,17 @@ public class GameImage extends Component {
 	 * 
 	 * @param s
 	 *            Name of Image to read in
-	 * @throws IOException
-	 *             if file is not found
+	 * @throws Exception
+	 *             if file is not found, or if the argument is illegal
 	 */
-	public GameImage(String s) throws IOException {
+	public GameImage(String s) {
 		this();
-		image = ImageIO.read(getClass().getResource(s));
+		try {
+			//image = ImageIO.read(getClass().getResource(s));
+			image = ImageIO.read(new File(s));
+		} catch (IOException e) {
+			System.out.println("Image " + s + " could not be read. Are you sure it's there?");
+		}
 		generate();
 	}
 
@@ -54,16 +62,26 @@ public class GameImage extends Component {
 	 * Loads a new Image at path p, and generates an outline.
 	 * 
 	 * @param p
-	 *            Path to Image, from this class
+	 *            Path to Image, from base
 	 * @param s
 	 *            Name of Image
-	 * @throws IOException
-	 *             if file is not found
+	 * @throws Exception
+	 *             if file is not found, or if the argument is illegal
 	 */
-	public GameImage(String p, String s) throws IOException {
+	public GameImage(String p, String s) {
 		this();
 		path = p;
-		image = ImageIO.read(getClass().getResource(path + s));
+		try {
+			image = ImageIO.read(new File(path + s));
+		} catch (IOException e) {
+			System.out.println("Image " + s + " could not be read at path " + p + ". Are you sure it's there?");
+		}
+		generate();
+	}
+	
+	public GameImage(BufferedImage i) {
+		this();
+		image = i;
 		generate();
 	}
 
@@ -235,8 +253,12 @@ public class GameImage extends Component {
 	 * Returns the High-Res Image to draw with.
 	 * 
 	 * @return BufferedImage image
+	 * @throws Exception 
 	 */
 	public BufferedImage getImage() {
+		if (image == null)
+			System.out.println("Image is null!");
+		
 		return image;
 	}
 

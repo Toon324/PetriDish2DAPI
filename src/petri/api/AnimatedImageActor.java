@@ -56,10 +56,14 @@ public abstract class AnimatedImageActor extends ImageActor {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), (int) (center.x), (int) (center.y),
-				(int) (center.x) + (int) (size.x), (int) (center.y)
-						+ (int) (size.y), xTile * image.getWidth(), yTile
-						* image.getHeight(), (xTile + 1) * image.getWidth(),
-				(yTile + 1) * image.getHeight(), null);
+		try {
+			g.drawImage(image.getImage(), (int) (center.x), (int) (center.y),
+					(int) (center.x) + (int) (size.x), (int) (center.y)
+							+ (int) (size.y), xTile * image.getWidth(), yTile
+							* image.getHeight(), (xTile + 1) * image.getWidth(),
+					(yTile + 1) * image.getHeight(), null);
+		} catch (Exception e) {
+			System.out.println("Could not draw animatedImage " + toString() + " due to a null image.");
+		}
 	}
 }

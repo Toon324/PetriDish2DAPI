@@ -35,7 +35,11 @@ public abstract class ImageActor extends Actor {
 
 	@Override
 	public void draw(Graphics g) {
-		g.drawImage(image.getImage(), (int) center.x, (int) center.y,(int) size.x,(int) size.y, null);
+		try {
+			g.drawImage(image.getImage(), getCorner().x, getCorner().y ,(int) size.x,(int) size.y, null);
+		} catch (Exception e) {
+			System.out.println("Could not draw " + toString() + " due to a null image.");
+		}
 	}
 	
 	@Override

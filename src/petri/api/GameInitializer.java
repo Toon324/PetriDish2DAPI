@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 
 /**
  * Starts the game and displays the Applet. Offers methods to fetch the
- * GameEngine, GameApplet, and Frame for manipulation.
+ * GameEngine, GameApplet, and Frame for manipulation. This is the first thing you should create.
  * 
  * @author Cody Swendrowski
  */

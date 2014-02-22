@@ -29,11 +29,9 @@ public abstract class PolygonActor extends Actor {
 
 	public PolygonActor(GameEngine e) {
 		super(e);
-		basePoly = new Polygon();
-		vectVel = new Point2D.Float(0, 0);
-		center = new Point2D.Float(0, 0);
 		drawColor = Color.black;
 		centerLines = false;
+		drawPoly = new Polygon();
 	}
 	
 	/**

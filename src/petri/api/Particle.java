@@ -27,7 +27,7 @@ public class Particle extends PolygonActor {
 	public Particle(GameEngine e, Point2D.Float vectorSpeed, Color c) {
 		super(e);
 		alpha = 255;
-		vectVel = vectorSpeed;
+		velocity = vectorSpeed;
 		drawColor = c;
 
 		// Size of particle
@@ -44,15 +44,15 @@ public class Particle extends PolygonActor {
 			drawColor = new Color(drawColor.getRed(), drawColor.getGreen(),
 					drawColor.getBlue(), alpha / (a + 1));
 			g.setColor(drawColor);
-			g.fillRect((int) (center.x - vectVel.x / 6 * a),
-					(int) (center.y - vectVel.y / 6 * a), 4, 4);
+			g.fillRect((int) (center.x - velocity.x / 6 * a),
+					(int) (center.y - velocity.y / 6 * a), 4, 4);
 		}
 	}
 
 	@Override
 	public void move(int ms) {
-		setCenter(center.x + (vectVel.x * (ms / 100f)), center.y
-				+ (vectVel.y * (ms / 100f)));
+		setCenter(center.x + (velocity.x * (ms / 100f)), center.y
+				+ (velocity.y * (ms / 100f)));
 	}
 
 	@Override

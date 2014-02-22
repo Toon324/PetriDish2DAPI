@@ -41,6 +41,7 @@ public final class Actors {
 			return;
 		}
 		toAdd.add(a);
+		_checkInvariant();
 	}
 
 	/**
@@ -69,7 +70,7 @@ public final class Actors {
 		// Collects dead actors in an array and moves live ones, checking for
 		// collisions
 		for (Actor a : actors.toArray(new Actor[0])) {
-			if (a.isDead()) {
+			if (a.shouldRemove()) {
 				toRemove.add(a);
 			} else {
 				a.move(ms);
@@ -90,8 +91,10 @@ public final class Actors {
 
 		// Spawns particle explosions
 		for (Point2D.Float p : particles) {
-			engine.particleEngine.spawnRandomExplosion(p);
+			engine.getParticleEngine().spawnRandomExplosion(p);
 		}
+		
+		_checkInvariant();
 	}
 
 	/**
@@ -130,6 +133,7 @@ public final class Actors {
 		Particle p = new Particle(engine, vectorSpeed, c);
 		p.setCenter(center.x,center.y);
 		add(p);
+		_checkInvariant();
 	}
 
 	/**
@@ -140,6 +144,7 @@ public final class Actors {
 	 */
 	public void setEngine(GameEngine e) {
 		engine = e;
+		_checkInvariant();
 	}
 
 	/**
@@ -147,6 +152,44 @@ public final class Actors {
 	 */
 	public void clear() {
 		actors.clear();
+		_checkInvariant();
+	}
+	
+	public boolean _checkInvariant() {
+		
+		if (actors == null)
+			return _report("The ArrayList for Actors is null.");
+		
+		if (engine == null)
+			return _report("The GameEngine for Actors is null.");
+		
+		if (threadPool == null)
+			return _report("There is no ThreadPool to run Actors with.");
+		
+		if (actors.size() >= MAX_ACTORS)
+			return _report("Actors exceeds max actor size.");
+		
+		if (actors.size() == 0)
+			_warning("Actors is currently empty.");
+		
+		
+		return true;
+	}
+
+	/**
+	 * @param string
+	 */
+	private void _warning(String s) {
+		System.out.println("Invariant warning: " + s);
+	}
+
+	/**
+	 * @param string
+	 * @return
+	 */
+	private boolean _report(String s) {
+		System.out.println("Invariant error: " + s);
+		return false;
 	}
 
 }

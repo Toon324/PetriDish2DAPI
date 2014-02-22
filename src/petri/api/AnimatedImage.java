@@ -29,7 +29,7 @@ public class AnimatedImage extends GameImage {
 	 * @throws IOException
 	 *             If given Image is not found, an IOException is thrown
 	 */
-	public AnimatedImage(String s, int numHor, int numVert) throws IOException {
+	public AnimatedImage(String s, int numHor, int numVert) throws Exception {
 
 		numAcross = numHor;
 		numDown = numVert;
@@ -49,7 +49,7 @@ public class AnimatedImage extends GameImage {
 				}
 			}
 		} catch (Exception e) {
-			GameEngine.log("Error in Image generation for " + s);
+			GameEngine.log("AnimatedImage error: Can not generate outline for " + s + ". Reason: " + e.getMessage());
 		}
 	}
 
@@ -89,7 +89,7 @@ public class AnimatedImage extends GameImage {
 				}
 			}
 		} catch (Exception e) {
-			GameEngine.log("Error in Image generation for " + s);
+			GameEngine.log("AnimatedImage error: Can not generate outline for " + s + ". Reason: " + e.getMessage());
 		}
 	}
 

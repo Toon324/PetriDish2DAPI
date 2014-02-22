@@ -15,8 +15,8 @@ import java.awt.geom.Point2D;
  */
 public abstract class Actor {
 
-	protected boolean death, collision;
-	protected Point2D.Float center, size, vectVel; // speed in pixels/s
+	protected boolean death;
+	protected Point2D.Float center, size, velocity, acceleration, maxVelocity;
 	protected Polygon basePoly;
 	protected GameEngine engine;
 	protected int health, dir, maxHealth;
@@ -28,16 +28,54 @@ public abstract class Actor {
 	 *            GameEngine to utilize
 	 */
 	public Actor(GameEngine e) {
-		vectVel = new Point2D.Float(0, 0);
+		velocity = new Point2D.Float(0, 0); // speed in pixels/s
 		center = new Point2D.Float(0, 0);
 		size = new Point2D.Float(0, 0);
+		acceleration = new Point2D.Float(0, 0);
+		maxVelocity = new Point2D.Float(Integer.MAX_VALUE, Integer.MAX_VALUE);
 		death = false;
-		collision = false;
 		engine = e;
 		basePoly = new Polygon();
 		health = 0;
 		dir = 0;
 		maxHealth = 0;
+		_checkInvariant();
+	}
+
+	/**
+	 * 
+	 */
+	private boolean _checkInvariant() {
+		if (engine == null)
+			return _report("No GameEngine found.");
+		
+		if (health == 0) {
+			_warning("Actor health is 0.");
+		}
+		
+		if (maxHealth == 0)
+			_warning("Max health is 0.");
+		
+		if (size.x == 0 || size.y == 0)
+			_warning("The size of the Actor is 0 in one of the dimensions.");
+			
+		if (basePoly == null)
+			return _report("The polygon is null, so Actor can't be drawn.");
+		
+		return true;
+	}
+	
+	/**
+	 * @param string
+	 * @return
+	 */
+	private void _warning(String s) {
+		System.out.println("Invariant warning: " + s);
+	}
+
+	private boolean _report(String s) {
+		System.out.println("Invariant error: " + s);
+		return false;
 	}
 
 	/**
@@ -55,7 +93,15 @@ public abstract class Actor {
 	 * @return vectVel
 	 */
 	public Point2D.Float getVelocity() {
-		return vectVel;
+		return velocity;
+	}
+
+	public Point2D.Float getMaxVelocity() {
+		return maxVelocity;
+	}
+
+	public Point2D.Float getAcceleration() {
+		return acceleration;
 	}
 
 	/**
@@ -68,6 +114,16 @@ public abstract class Actor {
 	}
 
 	/**
+	 * Returns the upper-left most corner of the bounding rectangle for the
+	 * Actor.
+	 * 
+	 * @return corner
+	 */
+	public Point getCorner() {
+		return basePoly.getBounds().getLocation();
+	}
+
+	/**
 	 * Draws the Actor.
 	 * 
 	 * @param g
@@ -76,22 +132,33 @@ public abstract class Actor {
 	public abstract void draw(Graphics g);
 
 	/**
-	 * Moves the Actor.
+	 * Moves the Actor. Increases velocity by acceleration up until maxVelocity
+	 * is hit (positive or negative), which is the max value of Integer by
+	 * default. Then proceeds to update position by
 	 * 
 	 * @param ms
 	 *            Time since last call in Milliseconds
 	 */
 	public void move(int ms) {
-		setCenter(center.x + (ms / 100F) * vectVel.x, center.y + (ms / 100F)
-				* vectVel.y);
+		if (velocity.x + (acceleration.x * (ms / 100F)) <= maxVelocity.x
+				&& velocity.x + (acceleration.x * (ms / 100F)) >= -maxVelocity.x)
+			velocity.x += acceleration.x * (ms / 100F);
+
+		if (velocity.y + (acceleration.y * (ms / 100F)) <= maxVelocity.y
+				&& velocity.y + (acceleration.y * (ms / 100F)) >= -maxVelocity.y)
+			velocity.y += acceleration.y * (ms / 100F);
+
+		setCenter(center.x + (ms / 100F) * velocity.x, center.y + (ms / 100F)
+				* velocity.y);
 	}
 
 	/**
-	 * Returns true if Actor is dead; else, returns false.
+	 * Called by handleActors to check to see if this Actor should be removed.
+	 * By default, returns true if Actor is dead.
 	 * 
 	 * @return death
 	 */
-	public boolean isDead() {
+	public boolean shouldRemove() {
 		return death;
 	}
 
@@ -115,6 +182,7 @@ public abstract class Actor {
 		health -= damage;
 		if (health <= 0)
 			death = true;
+		_checkInvariant();
 	}
 
 	/**
@@ -127,6 +195,7 @@ public abstract class Actor {
 		health += healAmt;
 		if (health >= maxHealth)
 			health = maxHealth;
+		_checkInvariant();
 	}
 
 	/**
@@ -138,12 +207,13 @@ public abstract class Actor {
 	 */
 	public void setBasePoly(Polygon poly) {
 		basePoly = poly;
+		_checkInvariant();
 	}
 
 	/**
 	 * Checks to see if Actor is colliding with another Actor. This method
 	 * checks to see if either of the Polygons that contain collision points are
-	 * intersecting, and if they are, sets boolean collision to true.
+	 * intersecting, and if they are, calls onCollision on both Actors.
 	 * 
 	 * @param a
 	 *            Actor to check collision against
@@ -167,14 +237,24 @@ public abstract class Actor {
 		for (int i = 0; i < basePoly.npoints; i++) {
 			if (otherPoly.contains(new Point(basePoly.xpoints[i],
 					basePoly.ypoints[i]))) {
-				collision = true;
-				a.collision = true;
+				onCollision(a);
+				a.onCollision(a);
 			}
 		}
 	}
 
 	/**
-	 * Sets the center of the Actor.
+	 * Called when this Actor collides with another Actor. By default, does
+	 * nothing.
+	 */
+	protected void onCollision(Actor other) {
+
+	}
+
+	/**
+	 * Sets the center of the Actor. This method translates the base Polygon to
+	 * 0,0 then back to the new co-ordinates. This maintains the correct Polygon
+	 * shape.
 	 * 
 	 * @param x
 	 *            X co-ordinate of center
@@ -188,7 +268,8 @@ public abstract class Actor {
 	}
 
 	/**
-	 * Sets the death boolean of Actor.
+	 * Sets the death boolean of Actor. If an Actor's death is set to true, it
+	 * will be removed on the next call to handleActors
 	 * 
 	 * @param d
 	 *            boolean to set to
@@ -196,31 +277,30 @@ public abstract class Actor {
 	public void setDeath(boolean d) {
 		death = d;
 	}
-	
+
 	/**
 	 * @param velX
 	 * @param velY
 	 */
 	public void setVelocity(float velX, float velY) {
-		vectVel.x = velX;
-		vectVel.y = velY;
+		velocity.x = velX;
+		velocity.y = velY;
 	}
 
-	/**
-	 * Returns true IFF checkCollision has detected a collision.
-	 * 
-	 * @return collision
-	 */
-	public boolean isColliding() {
-		return collision;
+	public void setAcceleration(float acelX, float acelY) {
+		acceleration.x = acelX;
+		acceleration.y = acelY;
 	}
 
-	/**
-	 * Sets boolean collision to false. Used to allow Actor to check for a new
-	 * collision.
-	 */
-	public void clearCollision() {
-		collision = false;
+	public void setMaxVelocity(float x, float y) {
+		maxVelocity.x = x;
+		maxVelocity.y = y;
+	}
+
+	public void setSize(float x, float y) {
+		size.x = x;
+		size.y = y;
+		_checkInvariant();
 	}
 
 	/**

@@ -38,7 +38,7 @@ public class DualResolutionGameImage extends GameImage {
 	 * @throws IOException
 	 *             IFF file is not found, throws an IOException
 	 */
-	public DualResolutionGameImage(String high, String low) throws IOException {
+	public DualResolutionGameImage(String high, String low) throws Exception {
 		super(low);
 		image2 = ImageIO.read(getClass().getResource(high)); // High res used for
 														// drawing
@@ -58,7 +58,7 @@ public class DualResolutionGameImage extends GameImage {
 	 *             IFF file is not found, throws an IOException
 	 */
 	public DualResolutionGameImage(String p, String high, String low)
-			throws IOException {
+			throws Exception {
 		super(p,low);
 		
 		image2 = ImageIO.read(getClass().getResource(path + high)); // High res used for
@@ -71,6 +71,8 @@ public class DualResolutionGameImage extends GameImage {
 	 * @return BufferedImage image
 	 */
 	public BufferedImage getImage() {
+		if (image2 == null)
+			GameEngine.log("DualResolutionImage error: The BufferedImage is null.");
 		return image2;
 	}
 }

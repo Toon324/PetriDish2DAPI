@@ -49,7 +49,7 @@ public class ParticleEngine {
 			vector.x = (float) (speed * Math.cos(angleInc * x));
 			vector.y = (float) (speed * Math.sin(angleInc * x));
 
-			engine.actors.addParticle(center, vector, c);
+			engine.getActors().addParticle(center, vector, c);
 		}
 	}
 
@@ -77,7 +77,7 @@ public class ParticleEngine {
 			vector.x = (float) (speed * Math.cos(angleInc * x));
 			vector.y = (float) (speed * Math.sin(angleInc * x));
 
-			engine.actors.addParticle(center, vector, color);
+			engine.getActors().addParticle(center, vector, color);
 		}
 	}
 }
